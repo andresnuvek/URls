@@ -1,0 +1,17 @@
+version: "3"
+services:
+  nodered-dev:
+    image: nodered/node-red:latest
+    ports:
+      - "2880:1880"
+    environment:
+      - STRAPI_URL=https://admin-dev.scripturecentral.org
+      - STRAPI_API_KEY=Bearer ddba4838af335523c4a688fe66a1c8ecbd81f9a81b7b6d9541ebcc319315a3a6c56809777979f5c519cfdca2dd4b3d045a4107d2e325fe9a16a7b84ce06e6425d572a014666049f8b4825ae210ba1805500f474c39b9c16cfe0b3bdfd26e6b8af92a95cee13f868f7b0b753cc0298eea440a90a317a5f8878d49f62eafcb2932
+      - ELASTICSEARCH_URL=scripturecentral-dev.es.us-central1.gcp.cloud.es.io
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=6CyKgALqbu17xorXl3spUTGT
+      - NODE_RED_ENABLE_PROJECTS=false
+      - NODE_RED_PROJECT_NAME=nodered-etl
+      - URL_SITE_EN=https://dev.scripturecentral.org
+    volumes:
+      - ./nodered:/data
