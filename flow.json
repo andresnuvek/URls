@@ -1,136 +1,143 @@
 [
     {
-        "id": "9bae41413d809048",
+        "id": "e4ab771e79673c52",
         "type": "tab",
-        "label": "URLS",
+        "label": "Flow 2",
         "disabled": false,
         "info": "",
         "env": []
     },
     {
-        "id": "c4a84cee6284c497",
+        "id": "0f423dc7fc354cb4",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "367129b6a75dfe13",
+        "type": "gauth",
+        "name": "node-red@soy-enterprise-402215.iam.gserviceaccount.com"
+    },
+    {
+        "id": "5c487a685c5333a0",
+        "type": "http proxy",
+        "name": "",
+        "url": "https://api.scripturecentral.org/proxy/api/",
+        "noproxy": []
+    },
+    {
+        "id": "4b529f5deaae6a4f",
+        "type": "http proxy",
+        "name": "",
+        "url": "api.scripturecentral.org/proxy/api/knowhys",
+        "noproxy": []
+    },
+    {
+        "id": "fb6a92d4575d8330",
+        "type": "GSheet",
+        "z": "e4ab771e79673c52",
+        "creds": "367129b6a75dfe13",
+        "method": "get",
+        "action": "",
+        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o",
+        "cells": "Bookofmormoncentral.org!F:F",
+        "flatten": false,
+        "name": "",
+        "x": 190,
+        "y": 100,
+        "wires": [
+            [
+                "2e15a2b1f31c662d"
+            ]
+        ]
+    },
+    {
+        "id": "2e15a2b1f31c662d",
+        "type": "split",
+        "z": "e4ab771e79673c52",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 290,
+        "y": 140,
+        "wires": [
+            [
+                "75394a8b088fc686"
+            ]
+        ]
+    },
+    {
+        "id": "75394a8b088fc686",
         "type": "http request",
-        "z": "9bae41413d809048",
-        "name": "Get URL Based blogs",
+        "z": "e4ab771e79673c52",
+        "name": "",
         "method": "GET",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "https://api.scripturecentral.org/proxy/api/blogs",
+        "url": "https://api.scripturecentral.org/proxy/api/",
         "tls": "",
         "persist": false,
-        "proxy": "",
+        "proxy": "5c487a685c5333a0",
         "insecureHTTPParser": false,
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 540,
-        "y": 480,
+        "x": 410,
+        "y": 180,
         "wires": [
             [
-                "2cd189840a17327e"
+                "04223cee7f30d02a"
             ]
         ]
     },
     {
-        "id": "f25fd1e859dda773",
+        "id": "04223cee7f30d02a",
         "type": "function",
-        "z": "9bae41413d809048",
-        "name": "Modify URL Based on type",
-        "func": "var slug = \"blogs\";  // Replace with the actual slug\n\nvar slugToURLMapping = {\n    \"blogs\": \"https://scripturecentral.org/blogs\",\n    \"knowhy\": \"https://scripturecentral.org/knowhy\",\n    \"come-follow-me\": \"https://scripturecentral.org/come-follow-mellow-me.com\"\n};\n\nvar updatedURL = slugToURLMapping[slug];\n\nreturn { updatedURL: updatedURL };",
+        "z": "e4ab771e79673c52",
+        "name": "Check URL",
+        "func": "var url = msg.payload;\nvar statusCode = msg.statusCode;\n\nif (statusCode >= 200 && statusCode < 300) {\n    msg.payload = { url: url, status: 'URL exists' };\n} else {\n    msg.payload = { url: url, status: 'URL does not exist' };\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 880,
-        "y": 280,
-        "wires": [
-            [
-                "92f1e6a47a0535b2"
-            ]
-        ]
-    },
-    {
-        "id": "92f1e6a47a0535b2",
-        "type": "debug",
-        "z": "9bae41413d809048",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1190,
-        "y": 300,
-        "wires": []
-    },
-    {
-        "id": "8e219133f4238a3e",
-        "type": "inject",
-        "z": "9bae41413d809048",
-        "name": "blogs",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "str",
-        "x": 90,
+        "x": 530,
         "y": 220,
         "wires": [
             [
-                "7db62192b9223f69"
+                "38fc2152219e87a5"
             ]
         ]
     },
     {
-        "id": "715b31f7e0c70d99",
-        "type": "inject",
-        "z": "9bae41413d809048",
-        "name": "knowhy",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "str",
-        "x": 90,
-        "y": 260,
+        "id": "38fc2152219e87a5",
+        "type": "GSheet",
+        "z": "e4ab771e79673c52",
+        "creds": "367129b6a75dfe13",
+        "method": "update",
+        "action": "",
+        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o",
+        "cells": "Bookofmormoncentral.org!J:J",
+        "flatten": false,
+        "name": "",
+        "x": 870,
+        "y": 140,
         "wires": [
-            [
-                "7db62192b9223f69"
-            ]
+            []
         ]
     },
     {
-        "id": "f0cf8e0dcf43a099",
+        "id": "ef10b6e0609460b2",
         "type": "inject",
-        "z": "9bae41413d809048",
-        "name": "come-follow-me",
+        "z": "e4ab771e79673c52",
+        "name": "",
         "props": [
             {
                 "p": "payload"
@@ -146,50 +153,122 @@
         "onceDelay": 0.1,
         "topic": "",
         "payload": "",
-        "payloadType": "str",
+        "payloadType": "date",
         "x": 120,
-        "y": 300,
+        "y": 60,
         "wires": [
             [
-                "7db62192b9223f69"
+                "fb6a92d4575d8330"
             ]
         ]
     },
     {
-        "id": "2cd189840a17327e",
+        "id": "d1e92713.d3ed68",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "HTTP Request to API",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.scripturecentral.org",
+        "tls": "",
+        "persist": false,
+        "proxy": "4b529f5deaae6a4f",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 480,
+        "y": 200,
+        "wires": [
+            [
+                "e5474a1a.84a6b"
+            ]
+        ]
+    },
+    {
+        "id": "e5474a1a.84a6b",
         "type": "function",
-        "z": "9bae41413d809048",
-        "name": "cheerio",
-        "func": "var cheerio = require('cheerio');\n\n// Assume msg.payload contains the HTML content\nvar htmlContent = msg.payload;\n\n// Use Cheerio to extract information based on content types\nvar $ = cheerio.load(htmlContent);\n\nvar contentType;\nvar url;\n\n// Extract URL based on content type\nif (msg.contentType === \"blog\") {\n    url = $('meta[property=\"og:url\"]').attr('content');\n} else if (msg.contentType === \"come-follow-me\") {\n    url = $('meta[property=\"og:url\"]').attr('content');\n    // You may need to adjust this based on the actual HTML structure\n} else if (msg.contentType === \"knowhy\") {\n    url = $('meta[property=\"og:url\"]').attr('content');\n    // You may need to adjust this based on the actual HTML structure\n}\n\n// Set the extracted URL in the message payload\nmsg.payload = url;\n\n// Return the modified message object\nreturn msg;",
+        "z": "0f423dc7fc354cb4",
+        "name": "Process API Response",
+        "func": "var linkExists = msg.payload.linkExists; // Adjust based on API response\n\n// Prepare data for Google Sheets update\nvar data = {\n    range: 'J' + msg.payload.row, // Adjust in gsheets\n    values: [\n        [linkExists ? 'Exists' : 'Does not exist']\n    ]\n};\n\nmsg.googleSheets = data;\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 680,
-        "y": 360,
+        "x": 740,
+        "y": 220,
         "wires": [
             [
-                "f25fd1e859dda773"
+                "0b72f7c81acbd571"
             ]
         ]
     },
     {
-        "id": "7db62192b9223f69",
-        "type": "sheet-to-json",
-        "z": "9bae41413d809048",
-        "name": "get url from spreadsheet",
-        "raw": "false",
-        "range": "F2:F1561",
-        "header": "default",
-        "blankrows": false,
-        "x": 430,
-        "y": 240,
+        "id": "68cf4847478b1ce7",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 140,
         "wires": [
             [
-                "c4a84cee6284c497"
+                "66dd19fbbb4714e6"
             ]
+        ]
+    },
+    {
+        "id": "66dd19fbbb4714e6",
+        "type": "GSheet",
+        "z": "0f423dc7fc354cb4",
+        "creds": "367129b6a75dfe13",
+        "method": "get",
+        "action": "",
+        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o",
+        "cells": "Bookofmormoncentral.org!f21:f50",
+        "flatten": false,
+        "name": "get url",
+        "x": 250,
+        "y": 180,
+        "wires": [
+            [
+                "d1e92713.d3ed68"
+            ]
+        ]
+    },
+    {
+        "id": "0b72f7c81acbd571",
+        "type": "GSheet",
+        "z": "0f423dc7fc354cb4",
+        "creds": "367129b6a75dfe13",
+        "method": "update",
+        "action": "",
+        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o",
+        "cells": "Bookofmormoncentral.org!j3:j12",
+        "flatten": false,
+        "name": "update url",
+        "x": 1020,
+        "y": 240,
+        "wires": [
+            []
         ]
     }
 ]
