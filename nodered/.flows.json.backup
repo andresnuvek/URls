@@ -44,15 +44,15 @@
         "type": "function",
         "z": "e4ab771e79673c52",
         "name": "result",
-        "func": "\nmsg.payload = msg.statusCode\nmsg.cells = `J${msg.i+1}`\n\nreturn msg;",
+        "func": "\nmsg.payload = msg.statusCode\nmsg.cells = `${msg.sheet}!J${msg.i+1}`\n\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 870,
-        "y": 320,
+        "x": 1110,
+        "y": 360,
         "wires": [
             [
                 "38fc2152219e87a5"
@@ -72,11 +72,6 @@
                 "p": "sheet",
                 "v": "Bookofmormoncentral.org",
                 "vt": "str"
-            },
-            {
-                "p": "cells",
-                "v": "F:F",
-                "vt": "str"
             }
         ],
         "repeat": "",
@@ -90,7 +85,7 @@
         "y": 60,
         "wires": [
             [
-                "fb6a92d4575d8330"
+                "10fcc487f2582ab1"
             ]
         ]
     },
@@ -105,8 +100,8 @@
         "cells": "",
         "flatten": false,
         "name": "",
-        "x": 410,
-        "y": 140,
+        "x": 630,
+        "y": 180,
         "wires": [
             [
                 "3e4659ff770ecb44"
@@ -124,8 +119,8 @@
         "cells": "",
         "flatten": false,
         "name": "",
-        "x": 970,
-        "y": 360,
+        "x": 1210,
+        "y": 400,
         "wires": [
             [
                 "0b4ed50ea9ffd47e"
@@ -144,8 +139,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 620,
-        "y": 180,
+        "x": 860,
+        "y": 220,
         "wires": [
             [
                 "b72e6e0be0cac39d"
@@ -161,7 +156,7 @@
         "z": "e4ab771e79673c52",
         "name": "",
         "pauseType": "delay",
-        "timeout": "1",
+        "timeout": "0.5",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -172,8 +167,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 560,
-        "y": 420,
+        "x": 810,
+        "y": 460,
         "wires": [
             [
                 "6e6c5809518fd73b"
@@ -199,8 +194,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 550,
-        "y": 140,
+        "x": 790,
+        "y": 180,
         "wires": [
             [
                 "6e6c5809518fd73b"
@@ -220,8 +215,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 810,
-        "y": 160,
+        "x": 1050,
+        "y": 200,
         "wires": []
     },
     {
@@ -236,8 +231,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 670,
-        "y": 260,
+        "x": 890,
+        "y": 300,
         "wires": [
             [
                 "6e6c5809518fd73b"
@@ -263,11 +258,91 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 830,
-        "y": 280,
+        "x": 1070,
+        "y": 320,
         "wires": [
             [
                 "04223cee7f30d02a"
+            ]
+        ]
+    },
+    {
+        "id": "2fa3faa1d59417e1",
+        "type": "inject",
+        "z": "e4ab771e79673c52",
+        "name": "Scriptureplus.org",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "sheet",
+                "v": "Scriptureplus.org",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "10fcc487f2582ab1"
+            ]
+        ]
+    },
+    {
+        "id": "10fcc487f2582ab1",
+        "type": "function",
+        "z": "e4ab771e79673c52",
+        "name": "load",
+        "func": "msg.cells = `${msg.sheet}!F:F`\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 180,
+        "wires": [
+            [
+                "fb6a92d4575d8330"
+            ]
+        ]
+    },
+    {
+        "id": "36494e90ae2cf8c3",
+        "type": "inject",
+        "z": "e4ab771e79673c52",
+        "name": "Pearlofgreatpricecentral.com",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "sheet",
+                "v": "Pearlofgreatpricecentral.com",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 140,
+        "wires": [
+            [
+                "10fcc487f2582ab1"
             ]
         ]
     },
