@@ -427,6 +427,25 @@
             }
         }
     },
+    "node-red-contrib-cheerio-function": {
+        "name": "node-red-contrib-cheerio-function",
+        "version": "1.0.0-rc.9",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "cheerio": {
+                "name": "cheerio",
+                "types": [
+                    "cheerio-function"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-cheerio-function",
+                "file": "/data/node_modules/node-red-contrib-cheerio-function/cheerio.js"
+            }
+        }
+    },
     "node-red-contrib-spreadsheet-in": {
         "name": "node-red-contrib-spreadsheet-in",
         "version": "0.7.1",
@@ -479,22 +498,23 @@
             }
         }
     },
-    "node-red-contrib-cheerio-function": {
-        "name": "node-red-contrib-cheerio-function",
-        "version": "1.0.0-rc.9",
+    "node-red-contrib-google-sheets": {
+        "name": "node-red-contrib-google-sheets",
+        "version": "1.1.2",
         "local": true,
         "user": true,
         "nodes": {
-            "cheerio": {
-                "name": "cheerio",
+            "gsheet": {
+                "name": "gsheet",
                 "types": [
-                    "cheerio-function"
+                    "GSheet",
+                    "gauth"
                 ],
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-cheerio-function",
-                "file": "/data/node_modules/node-red-contrib-cheerio-function/cheerio.js"
+                "module": "node-red-contrib-google-sheets",
+                "file": "/data/node_modules/node-red-contrib-google-sheets/gsheet.js"
             }
         }
     }
