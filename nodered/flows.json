@@ -377,6 +377,35 @@
         ]
     },
     {
+        "id": "05c2970263b7b2a8",
+        "type": "inject",
+        "z": "e4ab771e79673c52",
+        "name": "Biblecentral.info",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "10fcc487f2582ab1"
+            ]
+        ]
+    },
+    {
         "id": "d1e92713.d3ed68",
         "type": "http request",
         "z": "0f423dc7fc354cb4",
