@@ -10,7 +10,7 @@
     {
         "id": "0f423dc7fc354cb4",
         "type": "tab",
-        "label": "Flow 3",
+        "label": "updateScripturePlusID",
         "disabled": false,
         "info": "",
         "env": []
@@ -406,14 +406,67 @@
         ]
     },
     {
-        "id": "d1e92713.d3ed68",
+        "id": "85dcc5a3cd86f146",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "evcEvidences",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "evc_evidences",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 140,
+        "wires": [
+            [
+                "aa6096f7b73a0abf"
+            ]
+        ]
+    },
+    {
+        "id": "aa6096f7b73a0abf",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "url",
+        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\n//if (msg.page >msg.maxPage){\nif (msg.page > 2) {\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}?page=${msg.page}`\n\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 180,
+        "wires": [
+            [
+                "7dc95af8d0f65e16"
+            ],
+            [
+                "f48be67a65f8d727"
+            ]
+        ]
+    },
+    {
+        "id": "f48be67a65f8d727",
         "type": "http request",
         "z": "0f423dc7fc354cb4",
-        "name": "HTTP Request to API",
+        "name": "Get S+",
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "https://api.scripturecentral.org",
+        "url": "",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -421,39 +474,64 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 480,
+        "x": 460,
         "y": 200,
         "wires": [
             [
-                "e5474a1a.84a6b"
+                "78186a095bca84ce"
             ]
         ]
     },
     {
-        "id": "e5474a1a.84a6b",
+        "id": "538ac6d888e45f17",
+        "type": "delay",
+        "z": "0f423dc7fc354cb4",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 330,
+        "y": 280,
+        "wires": [
+            [
+                "aa6096f7b73a0abf"
+            ]
+        ]
+    },
+    {
+        "id": "78186a095bca84ce",
         "type": "function",
         "z": "0f423dc7fc354cb4",
-        "name": "Process API Response",
-        "func": "var linkExists = msg.payload.linkExists; // Adjust based on API response\n\n// Prepare data for Google Sheets update\nvar data = {\n    range: 'J' + msg.payload.row, // Adjust in gsheets\n    values: [\n        [linkExists ? 'Exists' : 'Does not exist']\n    ]\n};\n\nmsg.googleSheets = data;\nreturn msg;",
+        "name": "prepareData",
+        "func": "\n\nfor (let index = 0; index < msg.payload.data.length; index++) {\n    const element = msg.payload.data[index];\n    msg.typeData.push(element)\n}\n\nmsg.maxPage = msg.payload.pagination.totalPages-1\n\nreturn msg;",
         "outputs": 1,
-        "timeout": "",
+        "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 740,
-        "y": 220,
+        "x": 510,
+        "y": 240,
         "wires": [
             [
-                "0b72f7c81acbd571"
+                "538ac6d888e45f17"
             ]
         ]
     },
     {
-        "id": "68cf4847478b1ce7",
+        "id": "4e9dd0688911975c",
         "type": "inject",
         "z": "0f423dc7fc354cb4",
-        "name": "",
+        "name": "getStrapi ecv by number",
         "props": [
             {
                 "p": "payload"
@@ -470,65 +548,239 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 100,
-        "y": 140,
+        "x": 170,
+        "y": 500,
         "wires": [
             [
-                "66dd19fbbb4714e6"
+                "8fec5e8c9fba687a"
             ]
         ]
     },
     {
-        "id": "66dd19fbbb4714e6",
-        "type": "GSheet",
+        "id": "ff2183c6c902e320",
+        "type": "function",
         "z": "0f423dc7fc354cb4",
-        "creds": "0f9e4add1d4cec9d",
-        "method": "get",
-        "action": "",
-        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o",
-        "cells": "Bookofmormoncentral.org!f21:f50",
-        "flatten": false,
-        "name": "get url",
-        "x": 250,
+        "name": "url",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/evidences?filters[number][$eq]=${msg.currentTypeData.number}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 240,
+        "wires": [
+            [
+                "f26e45d9c9fa3e90"
+            ]
+        ]
+    },
+    {
+        "id": "f26e45d9c9fa3e90",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "getStrapi",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 860,
+        "y": 280,
+        "wires": [
+            [
+                "1146df7375648711",
+                "75a92450b3daa30f",
+                "155c17352467ccc0",
+                "154748e827b1bfd8"
+            ]
+        ]
+    },
+    {
+        "id": "7dc95af8d0f65e16",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "function 1",
+        "func": "\nmsg.i = msg.i+1 || 0\nmsg.currentTypeData = null\n\nif (msg.typeData.length < msg.i){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.typeData[msg.i]\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
         "y": 180,
         "wires": [
             [
-                "553b359c48853da3"
+                "e51c23d2748ebdbc"
+            ],
+            [
+                "ff2183c6c902e320"
             ]
         ]
     },
     {
-        "id": "0b72f7c81acbd571",
-        "type": "GSheet",
+        "id": "1146df7375648711",
+        "type": "delay",
         "z": "0f423dc7fc354cb4",
-        "creds": "0f9e4add1d4cec9d",
-        "method": "update",
-        "action": "",
-        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o",
-        "cells": "Bookofmormoncentral.org!j3:j12",
-        "flatten": false,
-        "name": "update url",
-        "x": 1020,
-        "y": 240,
+        "d": true,
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 590,
+        "y": 360,
+        "wires": [
+            [
+                "7dc95af8d0f65e16"
+            ]
+        ]
+    },
+    {
+        "id": "e51c23d2748ebdbc",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "END",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "75a92450b3daa30f",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "update scripturePlus ID",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1110,
+        "y": 360,
         "wires": [
             []
         ]
     },
     {
-        "id": "553b359c48853da3",
+        "id": "8fec5e8c9fba687a",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "url",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/evidences?filters[number][$eq]=433`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 500,
+        "wires": [
+            [
+                "57e5edae688823e8"
+            ]
+        ]
+    },
+    {
+        "id": "57e5edae688823e8",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "getStrapi",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 520,
+        "y": 500,
+        "wires": [
+            [
+                "d42a95f3baca07f0"
+            ]
+        ]
+    },
+    {
+        "id": "d42a95f3baca07f0",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "update scripturePlusID",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "155c17352467ccc0",
         "type": "debug",
         "z": "0f423dc7fc354cb4",
-        "name": "debug 2",
+        "name": "msg.currentTypeData",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "currentTypeData",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 500,
-        "y": 120,
+        "x": 1040,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "154748e827b1bfd8",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "StrapiElement",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 260,
         "wires": []
     }
 ]
