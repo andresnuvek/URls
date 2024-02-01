@@ -26,7 +26,7 @@
         "id": "4b529f5deaae6a4f",
         "type": "http proxy",
         "name": "",
-        "url": "api.scripturecentral.org/proxy/api/knowhys",
+        "url": "api.scripturecentral.org/proxy/api/evidences",
         "noproxy": []
     },
     {
@@ -418,6 +418,11 @@
                 "p": "type",
                 "v": "evc_evidences",
                 "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "evidences",
+                "vt": "str"
             }
         ],
         "repeat": "",
@@ -427,8 +432,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
-        "y": 140,
+        "x": 130,
+        "y": 120,
         "wires": [
             [
                 "aa6096f7b73a0abf"
@@ -440,7 +445,7 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "url",
-        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\n//if (msg.page >msg.maxPage){\nif (msg.page > 2) {\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}?page=${msg.page}`\n\n    return [null, msg]\n}\n",
+        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}?page=${msg.page}`\n\n    return [null, msg]\n}\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -561,7 +566,7 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "url",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/evidences?filters[number][$eq]=${msg.currentTypeData.number}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[number][$eq]=${msg.currentTypeData.number}${msg.currentTypeData.locale? `&locale=${msg.currentTypeData.locale}`:\"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -630,7 +635,6 @@
         "id": "1146df7375648711",
         "type": "delay",
         "z": "0f423dc7fc354cb4",
-        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "0.5",
@@ -657,7 +661,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "END",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -674,17 +678,19 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "update scripturePlus ID",
-        "func": "\nreturn msg;",
+        "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: `${msg.currentTypeData.id}`\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1110,
-        "y": 360,
+        "x": 1010,
+        "y": 340,
         "wires": [
-            []
+            [
+                "03de2dc87fb3aff5"
+            ]
         ]
     },
     {
@@ -723,11 +729,12 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 520,
+        "x": 500,
         "y": 500,
         "wires": [
             [
-                "d42a95f3baca07f0"
+                "d42a95f3baca07f0",
+                "edc94957a5fce11f"
             ]
         ]
     },
@@ -736,7 +743,7 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "update scripturePlusID",
-        "func": "\nreturn msg;",
+        "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/evidences/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: \"Hello2\"\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -746,7 +753,9 @@
         "x": 700,
         "y": 500,
         "wires": [
-            []
+            [
+                "44f8b57c369a2be9"
+            ]
         ]
     },
     {
@@ -754,7 +763,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "msg.currentTypeData",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -762,7 +771,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1040,
+        "x": 1100,
         "y": 220,
         "wires": []
     },
@@ -771,7 +780,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "StrapiElement",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -782,5 +791,139 @@
         "x": 1080,
         "y": 260,
         "wires": []
+    },
+    {
+        "id": "19f89166a240fe2a",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "1a6b6204b981acf3",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "edc94957a5fce11f",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "44f8b57c369a2be9",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 910,
+        "y": 500,
+        "wires": [
+            [
+                "19f89166a240fe2a"
+            ]
+        ]
+    },
+    {
+        "id": "03de2dc87fb3aff5",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1210,
+        "y": 360,
+        "wires": [
+            [
+                "1a6b6204b981acf3"
+            ]
+        ]
+    },
+    {
+        "id": "9b858fb0890e96d4",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "Knowhy",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "scripture_knowhys",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "knowhys",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 160,
+        "wires": [
+            [
+                "aa6096f7b73a0abf"
+            ]
+        ]
     }
 ]
