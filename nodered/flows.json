@@ -553,11 +553,12 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 170,
+        "x": 150,
         "y": 500,
         "wires": [
             [
-                "8fec5e8c9fba687a"
+                "8fec5e8c9fba687a",
+                "8cc3554b6e624dcb"
             ]
         ]
     },
@@ -565,7 +566,8 @@
         "id": "ff2183c6c902e320",
         "type": "function",
         "z": "0f423dc7fc354cb4",
-        "name": "url",
+        "d": true,
+        "name": "url knowhy",
         "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[number][$eq]=${msg.currentTypeData.number}${msg.currentTypeData.locale? `&locale=${msg.currentTypeData.locale}`:\"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
@@ -573,7 +575,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 790,
+        "x": 710,
         "y": 240,
         "wires": [
             [
@@ -620,14 +622,15 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 700,
+        "x": 640,
         "y": 180,
         "wires": [
             [
                 "e51c23d2748ebdbc"
             ],
             [
-                "ff2183c6c902e320"
+                "ff2183c6c902e320",
+                "59ba8917f9f22246"
             ]
         ]
     },
@@ -677,6 +680,7 @@
         "id": "75a92450b3daa30f",
         "type": "function",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "update scripturePlus ID",
         "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: `${msg.currentTypeData.id}`\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
@@ -686,7 +690,7 @@
         "finalize": "",
         "libs": [],
         "x": 1010,
-        "y": 340,
+        "y": 360,
         "wires": [
             [
                 "03de2dc87fb3aff5"
@@ -697,7 +701,8 @@
         "id": "8fec5e8c9fba687a",
         "type": "function",
         "z": "0f423dc7fc354cb4",
-        "name": "url",
+        "d": true,
+        "name": "url evidences",
         "func": "msg.url = `${env.get('STRAPI_URL')}/api/evidences?filters[number][$eq]=433`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
@@ -705,7 +710,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 350,
         "y": 500,
         "wires": [
             [
@@ -743,7 +748,7 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "update scripturePlusID",
-        "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/evidences/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: \"Hello2\"\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
+        "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/insights/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: \"Hello2\"\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -763,7 +768,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "msg.currentTypeData",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -780,7 +785,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "StrapiElement",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -813,7 +818,7 @@
         "id": "1a6b6204b981acf3",
         "type": "debug",
         "z": "0f423dc7fc354cb4",
-        "name": "debug 2",
+        "name": "Updated Id",
         "active": false,
         "tosidebar": true,
         "console": false,
@@ -822,7 +827,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1280,
+        "x": 1290,
         "y": 320,
         "wires": []
     },
@@ -923,6 +928,81 @@
         "wires": [
             [
                 "aa6096f7b73a0abf"
+            ]
+        ]
+    },
+    {
+        "id": "8cc3554b6e624dcb",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "url title",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/insights?filters[title][$eq]=Abraham and Idrimi`;\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 540,
+        "wires": [
+            [
+                "57e5edae688823e8"
+            ]
+        ]
+    },
+    {
+        "id": "56ddbaa40839ff5c",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "Insights",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "pgpcinsights_posts",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "insights",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 200,
+        "wires": [
+            [
+                "aa6096f7b73a0abf"
+            ]
+        ]
+    },
+    {
+        "id": "59ba8917f9f22246",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "url title",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[title][$eq]=${msg.currentTypeData.title}}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 200,
+        "wires": [
+            [
+                "f26e45d9c9fa3e90"
             ]
         ]
     }
