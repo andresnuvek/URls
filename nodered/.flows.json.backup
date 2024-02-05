@@ -432,8 +432,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 130,
-        "y": 120,
+        "x": 110,
+        "y": 140,
         "wires": [
             [
                 "aa6096f7b73a0abf"
@@ -553,7 +553,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
+        "x": 170,
         "y": 500,
         "wires": [
             [
@@ -566,7 +566,6 @@
         "id": "ff2183c6c902e320",
         "type": "function",
         "z": "0f423dc7fc354cb4",
-        "d": true,
         "name": "url knowhy",
         "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[number][$eq]=${msg.currentTypeData.number}${msg.currentTypeData.locale? `&locale=${msg.currentTypeData.locale}`:\"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
         "outputs": 1,
@@ -575,8 +574,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 710,
-        "y": 240,
+        "x": 770,
+        "y": 220,
         "wires": [
             [
                 "f26e45d9c9fa3e90"
@@ -629,8 +628,7 @@
                 "e51c23d2748ebdbc"
             ],
             [
-                "ff2183c6c902e320",
-                "59ba8917f9f22246"
+                "ff2183c6c902e320"
             ]
         ]
     },
@@ -709,7 +707,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 350,
+        "x": 370,
         "y": 500,
         "wires": [
             [
@@ -733,7 +731,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 500,
+        "x": 520,
         "y": 500,
         "wires": [
             [
@@ -746,6 +744,7 @@
         "id": "d42a95f3baca07f0",
         "type": "function",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "update scripturePlusID",
         "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/insights/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: \"Hello2\"\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
@@ -754,7 +753,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 700,
+        "x": 720,
         "y": 500,
         "wires": [
             [
@@ -767,7 +766,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "msg.currentTypeData",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -809,7 +808,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1080,
+        "x": 1100,
         "y": 500,
         "wires": []
     },
@@ -863,7 +862,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 910,
+        "x": 930,
         "y": 500,
         "wires": [
             [
@@ -923,7 +922,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 110,
-        "y": 160,
+        "y": 180,
         "wires": [
             [
                 "aa6096f7b73a0abf"
@@ -935,14 +934,14 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "url title",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/insights?filters[title][$eq]=Abraham and Idrimi`;\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/qa?filters[title][$eq]=Did Ancient Americans Have Chariots?`;\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 390,
         "y": 540,
         "wires": [
             [
@@ -951,10 +950,306 @@
         ]
     },
     {
-        "id": "56ddbaa40839ff5c",
+        "id": "919bfe6e9b22f0ee",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "url",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "b3da0c064b822b3b",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "url",
+        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}?page=${msg.page}${(msg.locale != 'en') ? `&locale=${msg.locale}` : \"\"}`\n\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 680,
+        "wires": [
+            [
+                "38041cb346a476e4"
+            ],
+            [
+                "12c2dc4c9d8d6cd8"
+            ]
+        ]
+    },
+    {
+        "id": "12c2dc4c9d8d6cd8",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "Get S+",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 480,
+        "y": 700,
+        "wires": [
+            [
+                "88fa4ee2c7c4da56"
+            ]
+        ]
+    },
+    {
+        "id": "94dcb04bc5cc0c3e",
+        "type": "delay",
+        "z": "0f423dc7fc354cb4",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 350,
+        "y": 780,
+        "wires": [
+            [
+                "b3da0c064b822b3b"
+            ]
+        ]
+    },
+    {
+        "id": "88fa4ee2c7c4da56",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "prepareData",
+        "func": "\n\nfor (let index = 0; index < msg.payload.data.length; index++) {\n    const element = msg.payload.data[index];\n    msg.typeData.push(element)\n}\n\nmsg.maxPage = msg.payload.pagination.totalPages-1\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 740,
+        "wires": [
+            [
+                "94dcb04bc5cc0c3e"
+            ]
+        ]
+    },
+    {
+        "id": "f11a3e157439ff4d",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "getStrapi",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 880,
+        "y": 780,
+        "wires": [
+            [
+                "8470507495197745",
+                "c586ae27446c428b",
+                "d10d6a519cfb7019",
+                "47814a7efee53a8e"
+            ]
+        ]
+    },
+    {
+        "id": "38041cb346a476e4",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "function 2",
+        "func": "\nmsg.i = msg.i+1 || 0\nmsg.currentTypeData = null\n\nif (msg.typeData.length < msg.i){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.typeData[msg.i]\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 680,
+        "wires": [
+            [
+                "83fad2db0c85f6b8"
+            ],
+            [
+                "7fc2171be6c25e18"
+            ]
+        ]
+    },
+    {
+        "id": "8470507495197745",
+        "type": "delay",
+        "z": "0f423dc7fc354cb4",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 860,
+        "wires": [
+            [
+                "38041cb346a476e4"
+            ]
+        ]
+    },
+    {
+        "id": "83fad2db0c85f6b8",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "END",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "c586ae27446c428b",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "update scripturePlus ID",
+        "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: `${msg.currentTypeData.id}`\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 860,
+        "wires": [
+            [
+                "483d18c2101c2c09"
+            ]
+        ]
+    },
+    {
+        "id": "d10d6a519cfb7019",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "msg.currentTypeData",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "currentTypeData",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "47814a7efee53a8e",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "StrapiElement",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1100,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "8cd98df6638b173b",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "Updated Id",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1310,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "483d18c2101c2c09",
+        "type": "http request",
+        "z": "0f423dc7fc354cb4",
+        "name": "",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1230,
+        "y": 860,
+        "wires": [
+            [
+                "8cd98df6638b173b"
+            ]
+        ]
+    },
+    {
+        "id": "82e92b0bae20d2b6",
         "type": "inject",
         "z": "0f423dc7fc354cb4",
-        "name": "Insights",
+        "name": "Insights-en",
         "props": [
             {
                 "p": "payload"
@@ -968,6 +1263,11 @@
                 "p": "contentType",
                 "v": "insights",
                 "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "en",
+                "vt": "str"
             }
         ],
         "repeat": "",
@@ -977,31 +1277,89 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 110,
-        "y": 200,
+        "x": 140,
+        "y": 680,
         "wires": [
             [
-                "aa6096f7b73a0abf"
+                "b3da0c064b822b3b"
             ]
         ]
     },
     {
-        "id": "59ba8917f9f22246",
+        "id": "7fc2171be6c25e18",
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "url title",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[title][$eq]=${msg.currentTypeData.title}}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[title][$eq]=${msg.currentTypeData.title}${msg.locale ? `&locale=${msg.locale}` : \"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 850,
-        "y": 200,
+        "x": 830,
+        "y": 720,
         "wires": [
             [
-                "f26e45d9c9fa3e90"
+                "f11a3e157439ff4d",
+                "91d4bd8ce63558b5"
+            ]
+        ]
+    },
+    {
+        "id": "91d4bd8ce63558b5",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "debug 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "url",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "6b9b70e07670fb7b",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "Insights-es",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "pgpcinsights_posts",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "insights",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "es",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 720,
+        "wires": [
+            [
+                "b3da0c064b822b3b"
             ]
         ]
     }
