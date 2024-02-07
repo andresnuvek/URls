@@ -16,6 +16,14 @@
         "env": []
     },
     {
+        "id": "8c069999c82e3d42",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "5c487a685c5333a0",
         "type": "http proxy",
         "name": "",
@@ -934,7 +942,7 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "url title",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/qa?filters[title][$eq]=Did Ancient Americans Have Chariots?`;\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/scripture_notes?filters[title][$eq]=Did Ancient Americans Have Chariots?`;\n//msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[title][$eq]=${msg.currentTypeData.title}${msg.locale ? `&locale=${msg.locale}` : \"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -971,7 +979,7 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "url",
-        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}?page=${msg.page}${(msg.locale != 'en') ? `&locale=${msg.locale}` : \"\"}`\n\n    return [null, msg]\n}\n",
+        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}&page=${msg.page}${(msg.locale != 'en') ? `&locale=${msg.locale}` : \"\"}`\n\n    return [null, msg]\n}\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
@@ -1009,7 +1017,8 @@
         "y": 700,
         "wires": [
             [
-                "88fa4ee2c7c4da56"
+                "88fa4ee2c7c4da56",
+                "41b75ff9f2d04806"
             ]
         ]
     },
@@ -1175,7 +1184,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "msg.currentTypeData",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1362,5 +1371,162 @@
                 "b3da0c064b822b3b"
             ]
         ]
+    },
+    {
+        "id": "fd6e552022ec1da8",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "q&a-en",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "scripture_notes?type=qa",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "q-and-as",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "en",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 780,
+        "wires": [
+            [
+                "b3da0c064b822b3b"
+            ]
+        ]
+    },
+    {
+        "id": "1645e997d588010c",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "q&a-es",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "scripture_notes?type=qa",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "q-and-as",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "es",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 820,
+        "wires": [
+            [
+                "b3da0c064b822b3b"
+            ]
+        ]
+    },
+    {
+        "id": "5f712b001ca844db",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "q&a-en",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "qa",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "qa",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "en",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 540,
+        "wires": [
+            [
+                "11fa0a026fc40803"
+            ]
+        ]
+    },
+    {
+        "id": "11fa0a026fc40803",
+        "type": "function",
+        "z": "0f423dc7fc354cb4",
+        "name": "url qa",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[title][$eq]=${msg.currentTypeData.title}${msg.locale ? `&locale=${msg.locale}` : \"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 580,
+        "wires": [
+            [
+                "57e5edae688823e8"
+            ]
+        ]
+    },
+    {
+        "id": "41b75ff9f2d04806",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 620,
+        "wires": []
     }
 ]

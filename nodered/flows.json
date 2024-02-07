@@ -16,6 +16,14 @@
         "env": []
     },
     {
+        "id": "8c069999c82e3d42",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "5c487a685c5333a0",
         "type": "http proxy",
         "name": "",
@@ -533,36 +541,6 @@
         ]
     },
     {
-        "id": "4e9dd0688911975c",
-        "type": "inject",
-        "z": "0f423dc7fc354cb4",
-        "name": "getStrapi ecv by number",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 170,
-        "y": 500,
-        "wires": [
-            [
-                "8fec5e8c9fba687a",
-                "8cc3554b6e624dcb"
-            ]
-        ]
-    },
-    {
         "id": "ff2183c6c902e320",
         "type": "function",
         "z": "0f423dc7fc354cb4",
@@ -695,73 +673,6 @@
         ]
     },
     {
-        "id": "8fec5e8c9fba687a",
-        "type": "function",
-        "z": "0f423dc7fc354cb4",
-        "d": true,
-        "name": "url evidences",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/evidences?filters[number][$eq]=433`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 370,
-        "y": 500,
-        "wires": [
-            [
-                "57e5edae688823e8"
-            ]
-        ]
-    },
-    {
-        "id": "57e5edae688823e8",
-        "type": "http request",
-        "z": "0f423dc7fc354cb4",
-        "name": "getStrapi",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 520,
-        "y": 500,
-        "wires": [
-            [
-                "d42a95f3baca07f0",
-                "edc94957a5fce11f"
-            ]
-        ]
-    },
-    {
-        "id": "d42a95f3baca07f0",
-        "type": "function",
-        "z": "0f423dc7fc354cb4",
-        "d": true,
-        "name": "update scripturePlusID",
-        "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/insights/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: \"Hello2\"\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 720,
-        "y": 500,
-        "wires": [
-            [
-                "44f8b57c369a2be9"
-            ]
-        ]
-    },
-    {
         "id": "155c17352467ccc0",
         "type": "debug",
         "z": "0f423dc7fc354cb4",
@@ -796,23 +707,6 @@
         "wires": []
     },
     {
-        "id": "19f89166a240fe2a",
-        "type": "debug",
-        "z": "0f423dc7fc354cb4",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1100,
-        "y": 500,
-        "wires": []
-    },
-    {
         "id": "1a6b6204b981acf3",
         "type": "debug",
         "z": "0f423dc7fc354cb4",
@@ -828,47 +722,6 @@
         "x": 1290,
         "y": 320,
         "wires": []
-    },
-    {
-        "id": "edc94957a5fce11f",
-        "type": "debug",
-        "z": "0f423dc7fc354cb4",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 660,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "44f8b57c369a2be9",
-        "type": "http request",
-        "z": "0f423dc7fc354cb4",
-        "name": "",
-        "method": "PUT",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 930,
-        "y": 500,
-        "wires": [
-            [
-                "19f89166a240fe2a"
-            ]
-        ]
     },
     {
         "id": "03de2dc87fb3aff5",
@@ -930,26 +783,6 @@
         ]
     },
     {
-        "id": "8cc3554b6e624dcb",
-        "type": "function",
-        "z": "0f423dc7fc354cb4",
-        "name": "url title",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/qa?filters[title][$eq]=Did`;\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 390,
-        "y": 540,
-        "wires": [
-            [
-                "57e5edae688823e8"
-            ]
-        ]
-    },
-    {
         "id": "919bfe6e9b22f0ee",
         "type": "debug",
         "z": "0f423dc7fc354cb4",
@@ -971,15 +804,15 @@
         "type": "function",
         "z": "0f423dc7fc354cb4",
         "name": "url",
-        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}?page=${msg.page}${(msg.locale != 'en') ? `&locale=${msg.locale}` : \"\"}`\n\n    return [null, msg]\n}\n",
+        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}&page=${msg.page}${(msg.locale != 'en') ? `&locale=${msg.locale}` : \"\"}`\n\n    return [null, msg]\n}\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 350,
-        "y": 680,
+        "x": 370,
+        "y": 520,
         "wires": [
             [
                 "38041cb346a476e4"
@@ -1005,11 +838,12 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 480,
-        "y": 700,
+        "x": 500,
+        "y": 540,
         "wires": [
             [
-                "88fa4ee2c7c4da56"
+                "88fa4ee2c7c4da56",
+                "41b75ff9f2d04806"
             ]
         ]
     },
@@ -1030,8 +864,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 350,
-        "y": 780,
+        "x": 370,
+        "y": 620,
         "wires": [
             [
                 "b3da0c064b822b3b"
@@ -1050,8 +884,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 530,
-        "y": 740,
+        "x": 550,
+        "y": 580,
         "wires": [
             [
                 "94dcb04bc5cc0c3e"
@@ -1074,8 +908,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 880,
-        "y": 780,
+        "x": 900,
+        "y": 620,
         "wires": [
             [
                 "8470507495197745",
@@ -1097,8 +931,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 660,
-        "y": 680,
+        "x": 680,
+        "y": 520,
         "wires": [
             [
                 "83fad2db0c85f6b8"
@@ -1125,8 +959,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 610,
-        "y": 860,
+        "x": 630,
+        "y": 700,
         "wires": [
             [
                 "38041cb346a476e4"
@@ -1146,8 +980,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 870,
-        "y": 640,
+        "x": 890,
+        "y": 480,
         "wires": []
     },
     {
@@ -1162,8 +996,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1030,
-        "y": 860,
+        "x": 1050,
+        "y": 700,
         "wires": [
             [
                 "483d18c2101c2c09"
@@ -1175,7 +1009,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "msg.currentTypeData",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1183,8 +1017,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1120,
-        "y": 720,
+        "x": 1140,
+        "y": 560,
         "wires": []
     },
     {
@@ -1200,8 +1034,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1100,
-        "y": 760,
+        "x": 1120,
+        "y": 600,
         "wires": []
     },
     {
@@ -1217,8 +1051,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1310,
-        "y": 820,
+        "x": 1330,
+        "y": 660,
         "wires": []
     },
     {
@@ -1237,8 +1071,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1230,
-        "y": 860,
+        "x": 1250,
+        "y": 700,
         "wires": [
             [
                 "8cd98df6638b173b"
@@ -1277,8 +1111,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 140,
-        "y": 680,
+        "x": 160,
+        "y": 520,
         "wires": [
             [
                 "b3da0c064b822b3b"
@@ -1297,8 +1131,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 830,
-        "y": 720,
+        "x": 850,
+        "y": 560,
         "wires": [
             [
                 "f11a3e157439ff4d",
@@ -1319,8 +1153,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1020,
-        "y": 660,
+        "x": 1040,
+        "y": 500,
         "wires": []
     },
     {
@@ -1355,12 +1189,109 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 140,
-        "y": 720,
+        "x": 160,
+        "y": 560,
         "wires": [
             [
                 "b3da0c064b822b3b"
             ]
         ]
+    },
+    {
+        "id": "fd6e552022ec1da8",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "q&a-en",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "scripture_notes?type=qa",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "q-and-as",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "en",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 620,
+        "wires": [
+            [
+                "b3da0c064b822b3b"
+            ]
+        ]
+    },
+    {
+        "id": "1645e997d588010c",
+        "type": "inject",
+        "z": "0f423dc7fc354cb4",
+        "name": "q&a-es",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "scripture_notes?type=qa",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "q-and-as",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "es",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 660,
+        "wires": [
+            [
+                "b3da0c064b822b3b"
+            ]
+        ]
+    },
+    {
+        "id": "41b75ff9f2d04806",
+        "type": "debug",
+        "z": "0f423dc7fc354cb4",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 460,
+        "wires": []
     }
 ]
