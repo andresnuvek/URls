@@ -18,7 +18,7 @@
     {
         "id": "8c069999c82e3d42",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Check html",
         "disabled": false,
         "info": "",
         "env": []
@@ -406,7 +406,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 140,
-        "y": 300,
+        "y": 280,
         "wires": [
             [
                 "10fcc487f2582ab1"
@@ -1292,6 +1292,197 @@
         "statusType": "auto",
         "x": 580,
         "y": 460,
+        "wires": []
+    },
+    {
+        "id": "40de2a7c28bd78f1",
+        "type": "function",
+        "z": "8c069999c82e3d42",
+        "d": true,
+        "name": "Check HTML Content",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 60,
+        "wires": [
+            [
+                "02e59013ee3fadb5"
+            ]
+        ]
+    },
+    {
+        "id": "8e65fa3c83f72106",
+        "type": "debug",
+        "z": "8c069999c82e3d42",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "d1eeed56bbf35017",
+        "type": "function",
+        "z": "8c069999c82e3d42",
+        "name": "Prepare Content Types",
+        "func": "// Define your content types\nmsg.contentType = [\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-musics\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-reports\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\n\nreturn msg ;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "e2fa5d956c2e2d2b"
+            ]
+        ]
+    },
+    {
+        "id": "19ab894937dd9c6b",
+        "type": "http request",
+        "z": "8c069999c82e3d42",
+        "name": "API Request",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 690,
+        "y": 100,
+        "wires": [
+            [
+                "6237c1f08b4d0814",
+                "3b3b83e18ee9fea1"
+            ]
+        ]
+    },
+    {
+        "id": "02e59013ee3fadb5",
+        "type": "debug",
+        "z": "8c069999c82e3d42",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1170,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ae0016f892bef6b5",
+        "type": "inject",
+        "z": "8c069999c82e3d42",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "d1eeed56bbf35017"
+            ]
+        ]
+    },
+    {
+        "id": "e2fa5d956c2e2d2b",
+        "type": "function",
+        "z": "8c069999c82e3d42",
+        "name": "url",
+        "func": "\nmsg.i = msg.i+1 || 0\n\nif (msg.i >= msg.contentType.length){\n\n    return [msg, null]\n}else{\n    \n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType[msg.i]}${msg.locale ? `?locale=${msg.locale}` : \"\"}`\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n     }\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 100,
+        "wires": [
+            [],
+            [
+                "19ab894937dd9c6b"
+            ]
+        ]
+    },
+    {
+        "id": "6237c1f08b4d0814",
+        "type": "delay",
+        "z": "8c069999c82e3d42",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 540,
+        "y": 180,
+        "wires": [
+            [
+                "e2fa5d956c2e2d2b"
+            ]
+        ]
+    },
+    {
+        "id": "3b3b83e18ee9fea1",
+        "type": "debug",
+        "z": "8c069999c82e3d42",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 100,
         "wires": []
     }
 ]
