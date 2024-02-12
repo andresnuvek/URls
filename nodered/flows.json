@@ -1316,28 +1316,11 @@
         ]
     },
     {
-        "id": "8e65fa3c83f72106",
-        "type": "debug",
-        "z": "8c069999c82e3d42",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 950,
-        "y": 240,
-        "wires": []
-    },
-    {
         "id": "d1eeed56bbf35017",
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "Prepare Content Types",
-        "func": "// Define your content types\nmsg.contentType = [\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-musics\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-reports\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\n\nreturn msg ;\n",
+        "func": "// Define your content types\nmsg.contentTypes = [\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-musics\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-reports\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\n\nreturn msg ;\n",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -1368,12 +1351,12 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 690,
-        "y": 100,
+        "x": 470,
+        "y": 180,
         "wires": [
             [
                 "6237c1f08b4d0814",
-                "3b3b83e18ee9fea1"
+                "958be3e6146b5fff"
             ]
         ]
     },
@@ -1427,15 +1410,15 @@
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "url",
-        "func": "\nmsg.i = msg.i+1 || 0\n\nif (msg.i >= msg.contentType.length){\n\n    return [msg, null]\n}else{\n    \n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType[msg.i]}${msg.locale ? `?locale=${msg.locale}` : \"\"}`\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n     }\n    return [null, msg]\n}\n",
+        "func": "\nmsg.i = msg.i+1 || 0\n\nif (msg.i >= msg.contentTypes.length){\n\n    return [msg, null]\n}else{\n    \n    msg.contentType = msg.contentTypes[msg.i] \n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}${msg.locale ? `?locale=${msg.locale}` : \"\"}`\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n     }\n    return [null, msg]\n}\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 550,
-        "y": 100,
+        "x": 290,
+        "y": 160,
         "wires": [
             [],
             [
@@ -1447,6 +1430,7 @@
         "id": "6237c1f08b4d0814",
         "type": "delay",
         "z": "8c069999c82e3d42",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "1",
@@ -1460,8 +1444,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 540,
-        "y": 180,
+        "x": 240,
+        "y": 240,
         "wires": [
             [
                 "e2fa5d956c2e2d2b"
@@ -1469,7 +1453,7 @@
         ]
     },
     {
-        "id": "3b3b83e18ee9fea1",
+        "id": "e8d3ed82a310928d",
         "type": "debug",
         "z": "8c069999c82e3d42",
         "name": "debug 8",
@@ -1477,12 +1461,32 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
+        "complete": "urls",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
-        "y": 100,
+        "x": 700,
+        "y": 320,
         "wires": []
+    },
+    {
+        "id": "958be3e6146b5fff",
+        "type": "function",
+        "z": "8c069999c82e3d42",
+        "name": "function 3",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.urls=[]\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        \n        $('a').each(function(){\n\n            msg.urls.push({\n                id: currentObject.id,\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('href')\n            })\n        })\n\n\n    }\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 240,
+        "wires": [
+            [
+                "e8d3ed82a310928d"
+            ]
+        ]
     }
 ]
