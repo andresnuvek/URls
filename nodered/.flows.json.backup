@@ -1317,15 +1317,15 @@
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "Prepare Content Types",
-        "func": "// Define your content types\nmsg.contentTypes = [\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-musics\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-reports\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\nmsg.cells = `${msg.sheet}!A:A`\nmsg.row = 1\n\n\nreturn msg ;\n",
+        "func": "// Define your content types\nmsg.contentTypes = [\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-musics\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-reports\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\nmsg.cells = `${msg.sheet}!A:A`\nmsg.row = 2\n\n\nreturn msg ;\n",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
-        "y": 100,
+        "x": 300,
+        "y": 200,
         "wires": [
             [
                 "e2fa5d956c2e2d2b"
@@ -1348,13 +1348,11 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 530,
-        "y": 180,
+        "x": 570,
+        "y": 400,
         "wires": [
             [
-                "6237c1f08b4d0814",
-                "958be3e6146b5fff",
-                "9f62740b183a6e02"
+                "958be3e6146b5fff"
             ]
         ]
     },
@@ -1397,17 +1395,19 @@
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "url",
-        "func": "\nmsg.i = msg.i+1 || 0\n\nif (msg.i >= msg.contentTypes.length){\n\n    return [msg, null]\n}else{\n    \n    msg.contentType = msg.contentTypes[msg.i] \n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}${msg.locale ? `?locale=${msg.locale}` : \"\"}`\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n     }\n    return [null, msg]\n}\n",
+        "func": "\nmsg.i = msg.i+1 || 0\n\nif (msg.i >= msg.contentTypes.length){\n    msg.payload = 'END contentTypes'\n    return [msg, null]\n}else{\n    \n    msg.contentType = msg.contentTypes[msg.i] \n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}${msg.locale ? `?locale=${msg.locale}` : \"\"}`\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n     }\n    return [null, msg]\n}\n",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
-        "y": 160,
+        "x": 330,
+        "y": 360,
         "wires": [
-            [],
+            [
+                "8bf4388005a2242f"
+            ],
             [
                 "19ab894937dd9c6b"
             ]
@@ -1417,7 +1417,6 @@
         "id": "6237c1f08b4d0814",
         "type": "delay",
         "z": "8c069999c82e3d42",
-        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "1",
@@ -1431,8 +1430,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 340,
-        "y": 260,
+        "x": 540,
+        "y": 540,
         "wires": [
             [
                 "e2fa5d956c2e2d2b"
@@ -1440,124 +1439,22 @@
         ]
     },
     {
-        "id": "e8d3ed82a310928d",
-        "type": "debug",
-        "z": "8c069999c82e3d42",
-        "name": "urls",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "urls",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 730,
-        "y": 280,
-        "wires": []
-    },
-    {
         "id": "958be3e6146b5fff",
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "cheerio to check html",
-        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.urls=[]\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        \n        $('a').each(function(){\n            let url = {\n                id: currentObject.id,\n                type: \"a\",\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('href')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n         $('img').each(function(){\n            let url = {\n                    id: currentObject.id,\n                    type: \"img\",\n                    attribute: iterator,\n                    contentType: msg.contentType,\n                    url: $(this).attr('src')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n\n\n    }\n}\nreturn msg;",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.urls=[]\nmsg.e = 0\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    msg.currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        \n        $('a').each(function(){\n            let url = {\n                id: currentObject.id,\n                type: \"a\",\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('href')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n         $('img').each(function(){\n            let url = {\n                    id: currentObject.id,\n                    type: \"img\",\n                    attribute: iterator,\n                    contentType: msg.contentType,\n                    url: $(this).attr('src')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n\n\n    }\n}\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
-        "y": 240,
+        "x": 780,
+        "y": 400,
         "wires": [
             [
-                "e8d3ed82a310928d",
                 "bccedca48a01234e"
-            ]
-        ]
-    },
-    {
-        "id": "a85c32ff5c5c9e55",
-        "type": "function",
-        "z": "8c069999c82e3d42",
-        "name": "result",
-        "func": "// Extract properties from currentElement object\nvar id = msg.currentElement.id;\nvar type = msg.currentElement.type;\nvar attribute = msg.currentElement.attribute;\nvar contentType = msg.currentElement.contentType;\nvar url = msg.currentElement.url;\n\n// Prepare data array for Google Sheets\nmsg.payload = [[id, type, attribute, contentType, url, msg.statusCode]];\n\n// Define the range of cells to update\nmsg.cells = `${msg.sheet}!A${msg.row}:G${msg.row}`;\n\n// Increment the row for the next update\nmsg.row = msg.row + 1;\n\n// Return the modified message\nif (msg.payload != 200) {\n     return msg; }\n",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1130,
-        "y": 240,
-        "wires": [
-            [
-                "9418f552f33dec97",
-                "acad7d629fce79d0"
-            ]
-        ]
-    },
-    {
-        "id": "76c8c6993666eb6b",
-        "type": "http request",
-        "z": "8c069999c82e3d42",
-        "name": "GET",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1010,
-        "y": 240,
-        "wires": [
-            [
-                "a85c32ff5c5c9e55"
-            ]
-        ]
-    },
-    {
-        "id": "9418f552f33dec97",
-        "type": "debug",
-        "z": "8c069999c82e3d42",
-        "name": "exists?",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "currentElement",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1280,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "bccedca48a01234e",
-        "type": "function",
-        "z": "8c069999c82e3d42",
-        "name": "url exists?",
-        "func": "msg.e = msg.e+1 || 0\nif (msg.urls.length > 0) {\n    //continue to check \n    msg.currentElement = msg.urls[msg.e]\n    msg.url = msg.currentElement.url\n    \n    return [null, msg];\n}else{\n    return [msg, null];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 860,
-        "y": 240,
-        "wires": [
-            [],
-            [
-                "76c8c6993666eb6b",
-                "d68c153b9091a0d3"
             ]
         ]
     },
@@ -1578,8 +1475,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 960,
-        "y": 120,
+        "x": 1460,
+        "y": 280,
         "wires": [
             [
                 "bccedca48a01234e"
@@ -1587,38 +1484,76 @@
         ]
     },
     {
-        "id": "d68c153b9091a0d3",
-        "type": "debug",
+        "id": "a85c32ff5c5c9e55",
+        "type": "function",
         "z": "8c069999c82e3d42",
-        "name": "debug 7",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "url",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 920,
-        "y": 280,
-        "wires": []
+        "name": "result",
+        "func": "// Extract properties from currentElement object\nvar id = msg.currentElement.id;\nvar type = msg.currentElement.type;\nvar attribute = msg.currentElement.attribute;\nvar contentType = msg.currentElement.contentType;\nvar url = msg.currentElement.url;\n\n// Prepare data array for Google Sheets\nmsg.payload = [[id, type, attribute, contentType, url, msg.statusCode]];\n\n// Define the range of cells to update\nmsg.cells = `${msg.sheet}!A${msg.row}:G${msg.row}`;\n\n// Increment the row for the next update\n\n\n// Return the modified message\nif (msg.statusCode != 200) { \n    msg.row = msg.row + 1;\n    return [null, msg]; \n}else{\n    return [msg, null]; \n}\n",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1510,
+        "y": 480,
+        "wires": [
+            [
+                "eeb84c4f08496624"
+            ],
+            [
+                "acad7d629fce79d0",
+                "165b57e44d1f48cd"
+            ]
+        ]
     },
     {
-        "id": "9f62740b183a6e02",
-        "type": "debug",
+        "id": "76c8c6993666eb6b",
+        "type": "http request",
         "z": "8c069999c82e3d42",
-        "name": "debug 8",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 720,
-        "y": 140,
-        "wires": []
+        "name": "GET",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1370,
+        "y": 540,
+        "wires": [
+            [
+                "a85c32ff5c5c9e55"
+            ]
+        ]
+    },
+    {
+        "id": "bccedca48a01234e",
+        "type": "function",
+        "z": "8c069999c82e3d42",
+        "name": "url exists?",
+        "func": "\nif ( msg.e >= msg.urls.length) {\n    msg.payload = 'END GROUP'\n    return [msg, null];\n}else{\n    \n    //continue to check \n    msg.currentElement = msg.urls[msg.e]\n    msg.url = msg.currentElement.url\n    msg.e = msg.e + 1\n    return [null, msg];\n}",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 400,
+        "wires": [
+            [
+                "44340f415d24c25f",
+                "6237c1f08b4d0814"
+            ],
+            [
+                "8c018fcee8055650"
+            ]
+        ]
     },
     {
         "id": "acad7d629fce79d0",
@@ -1631,12 +1566,104 @@
         "cells": "",
         "flatten": false,
         "name": "",
-        "x": 1110,
-        "y": 180,
+        "x": 1710,
+        "y": 480,
         "wires": [
             [
                 "eeb84c4f08496624"
             ]
         ]
+    },
+    {
+        "id": "44340f415d24c25f",
+        "type": "debug",
+        "z": "8c069999c82e3d42",
+        "name": "END GROUP",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1210,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8bf4388005a2242f",
+        "type": "debug",
+        "z": "8c069999c82e3d42",
+        "name": "END content Types",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "165b57e44d1f48cd",
+        "type": "debug",
+        "z": "8c069999c82e3d42",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "statusCode",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1600,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "8c018fcee8055650",
+        "type": "function",
+        "z": "8c069999c82e3d42",
+        "name": "function 3",
+        "func": "\nconst isUrl = global.get(\"isUrl\")\n\nif (!isUrl(msg.url)){\n    msg.statusCode = 'XXX'\n    return [msg, null]\n}else{\n    return [null,msg]\n}",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 480,
+        "wires": [
+            [
+                "a85c32ff5c5c9e55"
+            ],
+            [
+                "76c8c6993666eb6b",
+                "01933573d726d50a"
+            ]
+        ]
+    },
+    {
+        "id": "01933573d726d50a",
+        "type": "debug",
+        "z": "8c069999c82e3d42",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "url",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 580,
+        "wires": []
     }
 ]

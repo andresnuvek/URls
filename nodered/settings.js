@@ -481,7 +481,8 @@ module.exports = {
      */
     functionGlobalContext: {
         // os:require('os'),
-        cheerio: require('cheerio')
+        cheerio: require('cheerio'),
+        isUrl: require('is-url')
     },
 
     /** The maximum number of messages nodes will buffer internally as part of their

@@ -4,6 +4,7 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "is-url": "^1.2.4",
         "node-red-contrib-cheerio-function": "~1.0.0-rc.9",
         "node-red-contrib-google-sheets": "~1.1.2",
         "node-red-contrib-spreadsheet-in": "~0.7.1"
