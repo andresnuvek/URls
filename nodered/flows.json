@@ -63,7 +63,8 @@
         "y": 360,
         "wires": [
             [
-                "38fc2152219e87a5"
+                "38fc2152219e87a5",
+                "7ea6110d6042fd38"
             ]
         ]
     },
@@ -123,7 +124,7 @@
         "creds": "0f9e4add1d4cec9d",
         "method": "update",
         "action": "",
-        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o",
+        "sheet": "1xgPWcIGkOkfwtky8xch_2vKiaxbaLPAb9b2-biFk_4o-MBU",
         "cells": "",
         "flatten": false,
         "name": "",
@@ -412,6 +413,23 @@
                 "10fcc487f2582ab1"
             ]
         ]
+    },
+    {
+        "id": "7ea6110d6042fd38",
+        "type": "debug",
+        "z": "e4ab771e79673c52",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1240,
+        "y": 300,
+        "wires": []
     },
     {
         "id": "85dcc5a3cd86f146",
@@ -1299,7 +1317,7 @@
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "Prepare Content Types",
-        "func": "// Define your content types\nmsg.contentTypes = [\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-musics\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-reports\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\n\nreturn msg ;\n",
+        "func": "// Define your content types\nmsg.contentTypes = [\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-musics\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-reports\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\nmsg.cells = `${msg.sheet}!A:A`\nmsg.row = 1\n\n\nreturn msg ;\n",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -1330,7 +1348,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 470,
+        "x": 530,
         "y": 180,
         "wires": [
             [
@@ -1351,6 +1369,11 @@
             },
             {
                 "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "sheet",
+                "v": "",
                 "vt": "str"
             }
         ],
@@ -1381,7 +1404,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 290,
+        "x": 370,
         "y": 160,
         "wires": [
             [],
@@ -1394,7 +1417,6 @@
         "id": "6237c1f08b4d0814",
         "type": "delay",
         "z": "8c069999c82e3d42",
-        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "1",
@@ -1408,8 +1430,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 240,
-        "y": 240,
+        "x": 340,
+        "y": 260,
         "wires": [
             [
                 "e2fa5d956c2e2d2b"
@@ -1429,8 +1451,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 590,
-        "y": 320,
+        "x": 730,
+        "y": 280,
         "wires": []
     },
     {
@@ -1438,14 +1460,14 @@
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "cheerio to check html",
-        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.urls=[]\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        \n        $('a').each(function(){\n\n            msg.urls.push({\n                id: currentObject.id,\n                type: \"a\",\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('href')\n            })\n        })\n         $('img').each(function(){\n\n            msg.urls.push({\n                id: currentObject.id,\n                type: \"img\",\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('src')\n            })\n        })\n\n\n    }\n}\nreturn msg;",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.urls=[]\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        \n        $('a').each(function(){\n            let url = {\n                id: currentObject.id,\n                type: \"a\",\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('href')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n         $('img').each(function(){\n            let url = {\n                    id: currentObject.id,\n                    type: \"img\",\n                    attribute: iterator,\n                    contentType: msg.contentType,\n                    url: $(this).attr('src')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n\n\n    }\n}\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 560,
+        "x": 640,
         "y": 240,
         "wires": [
             [
@@ -1459,19 +1481,19 @@
         "type": "function",
         "z": "8c069999c82e3d42",
         "name": "result",
-        "func": "\nmsg.payload = msg.statusCode\nmsg.currentElement.statusCode = msg.statusCode\nif (msg.payload != 200) {\n     return msg; }\n",
+        "func": "// Extract properties from currentElement object\nvar id = msg.currentElement.id;\nvar type = msg.currentElement.type;\nvar attribute = msg.currentElement.attribute;\nvar contentType = msg.currentElement.contentType;\nvar url = msg.currentElement.url;\n\n// Prepare data array for Google Sheets\nmsg.payload = [[id, type, attribute, contentType, url, msg.statusCode]];\n\n// Define the range of cells to update\nmsg.cells = `${msg.sheet}!A${msg.row}:G${msg.row}`;\n\n// Increment the row for the next update\nmsg.row = msg.row + 1;\n\n// Return the modified message\nif (msg.payload != 200) {\n     return msg; }\n",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1050,
+        "x": 1130,
         "y": 240,
         "wires": [
             [
                 "9418f552f33dec97",
-                "eeb84c4f08496624"
+                "acad7d629fce79d0"
             ]
         ]
     },
@@ -1491,7 +1513,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 910,
+        "x": 1010,
         "y": 240,
         "wires": [
             [
@@ -1512,8 +1534,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1200,
-        "y": 240,
+        "x": 1280,
+        "y": 280,
         "wires": []
     },
     {
@@ -1528,7 +1550,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 780,
+        "x": 860,
         "y": 240,
         "wires": [
             [],
@@ -1555,8 +1577,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 880,
-        "y": 160,
+        "x": 960,
+        "y": 120,
         "wires": [
             [
                 "bccedca48a01234e"
@@ -1576,8 +1598,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 820,
-        "y": 360,
+        "x": 920,
+        "y": 280,
         "wires": []
     },
     {
@@ -1585,7 +1607,7 @@
         "type": "debug",
         "z": "8c069999c82e3d42",
         "name": "debug 8",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1593,8 +1615,27 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 660,
-        "y": 80,
+        "x": 720,
+        "y": 140,
         "wires": []
+    },
+    {
+        "id": "acad7d629fce79d0",
+        "type": "GSheet",
+        "z": "8c069999c82e3d42",
+        "creds": "0f9e4add1d4cec9d",
+        "method": "update",
+        "action": "",
+        "sheet": "159yAheevemEx4lDBbq3FYfItNTeaoGJXWMvpdw0-MBU",
+        "cells": "",
+        "flatten": false,
+        "name": "",
+        "x": 1110,
+        "y": 180,
+        "wires": [
+            [
+                "eeb84c4f08496624"
+            ]
+        ]
     }
 ]
