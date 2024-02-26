@@ -1861,10 +1861,10 @@
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
         "name": "cheerio to check html",
-        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.footnotes = \"\";\nmsg.e = 0\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    msg.currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        const footnotesDiv = $('div.footnotes');\n\n        if (footnotesDiv.length > 0) {\n    msg.footnotes = footnotesDiv.first().html();\n}\n\nreturn msg;",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.footnotes = \"\";\nmsg.e = 0\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    msg.currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        const footnotesDiv = $('div.footnotes');\n\n        if (footnotesDiv.length > 0) {\n            msg.footnotes = footnotesDiv.first().html();\n        }\n    }\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
-        "noerr": 1,
+        "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
@@ -1875,5 +1875,225 @@
                 "e96e9bdf9e9a6023"
             ]
         ]
+    },
+    {
+        "id": "5cbf4f03ed496891",
+        "type": "inject",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "getAll Kw form Web (ES)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 360,
+        "wires": [
+            [
+                "17833301ed116936"
+            ]
+        ]
+    },
+    {
+        "id": "17833301ed116936",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "getKnowhys",
+        "func": "\nmsg.kwUrls = []\nmsg.url = 'https://centralldm.es/knowhys-results/?_sf_ppp=11000'\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 400,
+        "wires": [
+            [
+                "baa81e292b96d712"
+            ]
+        ]
+    },
+    {
+        "id": "baa81e292b96d712",
+        "type": "http request",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "GET",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 390,
+        "y": 400,
+        "wires": [
+            [
+                "3ae84979026c050f"
+            ]
+        ]
+    },
+    {
+        "id": "3ae84979026c050f",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "cheerio",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nconst $ = cheerio.load(msg.payload);\n\n$('.card_title a').each(function(){\n    msg.kwUrls.push($(this).attr('href'))\n})\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 440,
+        "wires": [
+            [
+                "8757c2dbfda5594e"
+            ]
+        ]
+    },
+    {
+        "id": "8757c2dbfda5594e",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "iterate kw",
+        "func": "msg.i = msg.i || 0\n\nif(msg.i >= msg.kwUrls.length){\n    \n    msg.payload = 'END_iterate_kw'\n   return [msg, null]\n\n}else{\n    let currentUrl = msg.kwUrls[msg.i]\n\n    msg.url = currentUrl\n\n    console.log(msg.i, msg.url)\n\n    msg.i++\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 440,
+        "wires": [
+            [
+                "1c8d4a4f1305d58e"
+            ],
+            [
+                "54a1b4b395dddc4b"
+            ]
+        ]
+    },
+    {
+        "id": "09762ac47135e4b9",
+        "type": "delay",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.100",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 580,
+        "wires": [
+            [
+                "8757c2dbfda5594e"
+            ]
+        ]
+    },
+    {
+        "id": "1c8d4a4f1305d58e",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "END",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "54a1b4b395dddc4b",
+        "type": "http request",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "GET Current KW",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 730,
+        "y": 480,
+        "wires": [
+            [
+                "d86868f8852460b0"
+            ]
+        ]
+    },
+    {
+        "id": "d86868f8852460b0",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "cheerio",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nconst $ = cheerio.load(msg.payload);\n\n$('.footnotes').each(function(){\n\n    msg.oldFootnote = $(this).html()\n\n    //TODO: vereficar correcto footnote : \n    // <ul><li></li></ul>\n    // check: https://knowhy.bookofmormoncentral.org/knowhy/what-is-the-skin-of-blackness-in-the-book-of-mormon\n\n    msg.newFootnote= ''\n})\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 520,
+        "wires": [
+            [
+                "09762ac47135e4b9",
+                "64394877c05b0cd6"
+            ]
+        ]
+    },
+    {
+        "id": "64394877c05b0cd6",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "footnote",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1000,
+        "y": 480,
+        "wires": []
     }
 ]

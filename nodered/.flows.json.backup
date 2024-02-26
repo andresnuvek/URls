@@ -1683,167 +1683,6 @@
         "wires": []
     },
     {
-        "id": "69356dab36e3cfd2",
-        "type": "inject",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "Knowhy EN",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "type",
-                "v": "scripture_knowhys",
-                "vt": "str"
-            },
-            {
-                "p": "contentType",
-                "v": "knowhys",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 150,
-        "y": 80,
-        "wires": [
-            [
-                "005063a6889e90db"
-            ]
-        ]
-    },
-    {
-        "id": "ae87ae464c953cf8",
-        "type": "inject",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "Knowhy ES",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "type",
-                "v": "scripture_knowhys",
-                "vt": "str"
-            },
-            {
-                "p": "contentType",
-                "v": "knowwhys",
-                "vt": "str"
-            },
-            {
-                "p": "locale",
-                "v": "es",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 150,
-        "y": 120,
-        "wires": [
-            [
-                "005063a6889e90db"
-            ]
-        ]
-    },
-    {
-        "id": "1ba12c85143f6333",
-        "type": "debug",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "debug 13",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 600,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "319b741854b04838",
-        "type": "http request",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "Get S+",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 480,
-        "y": 140,
-        "wires": [
-            [
-                "6f5eedbcbc56ddfe",
-                "1ba12c85143f6333"
-            ]
-        ]
-    },
-    {
-        "id": "c448540d5e91cd8e",
-        "type": "delay",
-        "z": "6a5cdb3d473bbc8d",
-        "d": true,
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "0.5",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 350,
-        "y": 220,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "6f5eedbcbc56ddfe",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "prepareData",
-        "func": "\n\nfor (let index = 0; index < msg.payload.data.length; index++) {\n    const element = msg.payload.data[index];\n    msg.typeData.push(element)\n}\n\nmsg.maxPage = msg.payload.pagination.totalPages-1\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 530,
-        "y": 180,
-        "wires": [
-            [
-                "c448540d5e91cd8e"
-            ]
-        ]
-    },
-    {
         "id": "1bcd0d198182f18c",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
@@ -1855,65 +1694,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 845,
-        "y": 234,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "d4bfcb7b144f3462",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "d": true,
-        "name": "function 3",
-        "func": "\nmsg.i = msg.i+1 || 0\nmsg.currentTypeData = null\n\nif (msg.typeData.length < msg.i){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.typeData[msg.i]\n    return [null, msg]\n}\n",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 700,
-        "y": 120,
-        "wires": [
-            [],
-            [
-                "02da76167f91afee",
-                "4c3dbdca798ea646"
-            ]
-        ]
-    },
-    {
-        "id": "02da76167f91afee",
-        "type": "debug",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "debug 15",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 860,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "4c3dbdca798ea646",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "url knowhy",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[number][$eq]=${msg.currentTypeData.number}${msg.currentTypeData.locale? `&locale=${msg.currentTypeData.locale}`:\"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 810,
-        "y": 160,
+        "x": 840,
+        "y": 60,
         "wires": [
             []
         ]
@@ -1934,8 +1716,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 470,
-        "y": 340,
+        "x": 420,
+        "y": 120,
         "wires": [
             [
                 "92574b9bd1de6183",
@@ -1969,8 +1751,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
-        "y": 340,
+        "x": 100,
+        "y": 120,
         "wires": [
             [
                 "9cb2bc45d354c851"
@@ -1989,37 +1771,11 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
-        "y": 340,
+        "x": 280,
+        "y": 120,
         "wires": [
             [
                 "30d85103e94b4026"
-            ]
-        ]
-    },
-    {
-        "id": "6b254a6d264d0846",
-        "type": "delay",
-        "z": "6a5cdb3d473bbc8d",
-        "d": true,
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "1",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 540,
-        "y": 520,
-        "wires": [
-            [
-                "9cb2bc45d354c851"
             ]
         ]
     },
@@ -2039,8 +1795,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1370,
-        "y": 420,
+        "x": 1050,
+        "y": 280,
         "wires": [
             []
         ]
@@ -2049,24 +1805,21 @@
         "id": "e96e9bdf9e9a6023",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
-        "name": "url exists?",
-        "func": "\nif ( msg.e >= msg.urls.length) {\n    msg.payload = 'END GROUP'\n    return [msg, null];\n}else{\n    \n    //continue to check \n    msg.currentElement = msg.urls[msg.e]\n    msg.url = msg.currentElement.url\n    msg.e = msg.e + 1\n    return [null, msg];\n}",
+        "name": "Update Endote",
+        "func": "",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1010,
-        "y": 380,
+        "x": 980,
+        "y": 160,
         "wires": [
             [
-                "30346925c3e852c6",
-                "6b254a6d264d0846"
+                "30346925c3e852c6"
             ],
-            [
-                "38c981fabd04f134"
-            ]
+            []
         ]
     },
     {
@@ -2082,15 +1835,15 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1210,
-        "y": 360,
+        "x": 1160,
+        "y": 140,
         "wires": []
     },
     {
         "id": "92574b9bd1de6183",
         "type": "debug",
         "z": "6a5cdb3d473bbc8d",
-        "name": "END content Types",
+        "name": "payload",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2099,77 +1852,35 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 670,
-        "y": 320,
+        "x": 590,
+        "y": 100,
         "wires": []
     },
     {
-        "id": "38c981fabd04f134",
+        "id": "62cb58fe38ce9474",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
-        "name": "isValid Url",
-        "func": "\nconst isUrl = global.get(\"isUrl\")\n\nif (!isUrl(msg.url)){\n    msg.statusCode = 'XXX'\n    return [msg, null]\n}else{\n    return [null,msg]\n}",
-        "outputs": 2,
+        "name": "cheerio to check html",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.footnotes = \"\";\nmsg.e = 0\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    msg.currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        const footnotesDiv = $('div.footnotes');\n\n        if (footnotesDiv.length > 0) {\n            msg.footnotes = footnotesDiv.first().html();\n        }\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1200,
-        "y": 460,
+        "x": 730,
+        "y": 160,
         "wires": [
-            [],
             [
-                "be68a525f69db4ac",
-                "a524e143cd707fb1"
+                "e96e9bdf9e9a6023"
             ]
         ]
     },
     {
-        "id": "a524e143cd707fb1",
-        "type": "debug",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "debug 16",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "url",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1200,
-        "y": 560,
-        "wires": []
-    },
-    {
-        "id": "005063a6889e90db",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "url",
-        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}&page=${msg.page}${(msg.locale != 'en') ? `&locale=${msg.locale}` : \"\"}`\n\n    return [null, msg]\n}\n",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 330,
-        "y": 120,
-        "wires": [
-            [
-                "d4bfcb7b144f3462"
-            ],
-            [
-                "319b741854b04838"
-            ]
-        ]
-    },
-    {
-        "id": "4f267b5c7eedbc51",
+        "id": "5cbf4f03ed496891",
         "type": "inject",
         "z": "6a5cdb3d473bbc8d",
-        "name": "getStrapi ecv by number",
+        "name": "",
         "props": [
             {
                 "p": "payload"
@@ -2186,41 +1897,41 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 190,
-        "y": 600,
+        "x": 100,
+        "y": 400,
         "wires": [
             [
-                "2838ac89bc517f9d"
+                "17833301ed116936"
             ]
         ]
     },
     {
-        "id": "2838ac89bc517f9d",
+        "id": "17833301ed116936",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
-        "name": "url",
-        "func": "msg.url = `${env.get('STRAPI_URL')}/api/evidences?filters[number][$eq]=433`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
+        "name": "getKnowhys",
+        "func": "\nmsg.kwUrls = []\nmsg.url = 'https://centralldm.es/knowhys-results/?_sf_ppp=11000'\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
-        "y": 600,
+        "x": 250,
+        "y": 400,
         "wires": [
             [
-                "7eabb066e8872f07"
+                "baa81e292b96d712"
             ]
         ]
     },
     {
-        "id": "7eabb066e8872f07",
+        "id": "baa81e292b96d712",
         "type": "http request",
         "z": "6a5cdb3d473bbc8d",
-        "name": "getStrapi",
+        "name": "GET",
         "method": "GET",
-        "ret": "obj",
+        "ret": "txt",
         "paytoqs": "ignore",
         "url": "",
         "tls": "",
@@ -2230,42 +1941,87 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 540,
-        "y": 600,
+        "x": 390,
+        "y": 400,
         "wires": [
             [
-                "556a64a4c5a779c1",
-                "2db3095abde4b36b"
+                "3ae84979026c050f"
             ]
         ]
     },
     {
-        "id": "556a64a4c5a779c1",
+        "id": "3ae84979026c050f",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
-        "d": true,
-        "name": "update scripturePlusID",
-        "func": "\nconst updateUrl = `${env.get('STRAPI_URL')}/api/evidences/${currentTypeData}`;\nmsg.payload = {\n    scripturePlusId: \"Hello2\"\n};\n\nmsg.method = \"POST\";\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json' \n};\n\nmsg.url = updateUrl;\nreturn msg;",
+        "name": "cheerio",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nconst $ = cheerio.load(msg.payload);\n\n$('.card_title a').each(function(){\n    msg.kwUrls.push($(this).attr('href'))\n})\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
-        "noerr": 1,
+        "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
-        "y": 620,
+        "x": 440,
+        "y": 440,
         "wires": [
             [
-                "b4e6128bbfbbf1a7"
+                "8757c2dbfda5594e"
             ]
         ]
     },
     {
-        "id": "b4e6128bbfbbf1a7",
+        "id": "8757c2dbfda5594e",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "iterate kw",
+        "func": "msg.i = msg.i || 0\n\nif(msg.i >= msg.kwUrls.length){\n    \n    msg.payload = 'END_iterate_kw'\n   return [msg, null]\n\n}else{\n    let currentUrl = msg.kwUrls[msg.i]\n\n    msg.url = currentUrl\n\n    console.log(msg.i, msg.url)\n\n    msg.i++\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 440,
+        "wires": [
+            [
+                "1c8d4a4f1305d58e"
+            ],
+            [
+                "54a1b4b395dddc4b"
+            ]
+        ]
+    },
+    {
+        "id": "09762ac47135e4b9",
+        "type": "delay",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.100",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 580,
+        "wires": [
+            [
+                "8757c2dbfda5594e"
+            ]
+        ]
+    },
+    {
+        "id": "1c8d4a4f1305d58e",
         "type": "debug",
         "z": "6a5cdb3d473bbc8d",
-        "d": true,
-        "name": "updated entry",
+        "name": "END",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2274,44 +2030,70 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 940,
-        "y": 600,
+        "x": 730,
+        "y": 380,
         "wires": []
     },
     {
-        "id": "62cb58fe38ce9474",
-        "type": "function",
+        "id": "54a1b4b395dddc4b",
+        "type": "http request",
         "z": "6a5cdb3d473bbc8d",
-        "name": "cheerio to check html",
-        "func": "const cheerio = global.get('cheerio');\nconst htmlContent = msg.payload.htmlContent;\nmsg.footnotes = \"\";\n\n\nconst $ = cheerio.load(htmlContent);\nconst footnotesDiv = $('div.footnotes');\n\nif (footnotesDiv.length > 0) {\n    msg.footnotes = footnotesDiv.first().html();\n}\n\nreturn msg;\n\nconst cheerio = global.get(\"cheerio\")\n\nmsg.urls=[]\nmsg.e = 0\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    msg.currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        \n        $('a').each(function(){\n            let url = {\n                id: currentObject.id,\n                type: \"a\",\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('href')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n         $('img').each(function(){\n            let url = {\n                    id: currentObject.id,\n                    type: \"img\",\n                    attribute: iterator,\n                    contentType: msg.contentType,\n                    url: $(this).attr('src')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n\n\n    }\n}\nreturn msg;\nconst cheerio = global.get(\"cheerio\");\n\nmsg.containsFootnotes = false;\n\nfor (const iterator in msg.payload.data) {\n    let currentObject = msg.payload.data[iterator];\n    msg.currentObject = msg.payload.data[iterator];\n\n    for (const iterator of Object.keys(currentObject.attributes)) {\n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n\n        // Check if there are any div elements with class \"footnotes\"\n        if ($('div.footnotes').length > 0) {\n            msg.containsFootnotes = true;\n            // If found, set containsFootnotes to true and break the loop\n            break;\n        }\n    }\n\n    // If footnotes are found, break the outer loop\n    if (msg.containsFootnotes) {\n        break;\n    }\n}\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 4,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 780,
-        "y": 380,
+        "name": "GET Current KW",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 730,
+        "y": 480,
         "wires": [
             [
-                "e96e9bdf9e9a6023"
+                "d86868f8852460b0"
             ]
         ]
     },
     {
-        "id": "2db3095abde4b36b",
+        "id": "d86868f8852460b0",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "cheerio",
+        "func": "const cheerio = global.get(\"cheerio\")\n\nconst $ = cheerio.load(msg.payload);\n\n$('.footnotes').each(function(){\n\n    msg.oldFootnote = $(this).html()\n\n    //TODO: vereficar correcto footnote : \n    // <ul><li></li></ul>\n    // check: https://knowhy.bookofmormoncentral.org/knowhy/what-is-the-skin-of-blackness-in-the-book-of-mormon\n\n    msg.newFootnote= ''\n})\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 520,
+        "wires": [
+            [
+                "09762ac47135e4b9",
+                "64394877c05b0cd6"
+            ]
+        ]
+    },
+    {
+        "id": "64394877c05b0cd6",
         "type": "debug",
         "z": "6a5cdb3d473bbc8d",
-        "name": "debug 17",
+        "name": "debug 12",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "footnote",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 760,
-        "y": 520,
+        "x": 1000,
+        "y": 480,
         "wires": []
     }
 ]
