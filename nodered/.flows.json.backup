@@ -24,6 +24,14 @@
         "env": []
     },
     {
+        "id": "6a5cdb3d473bbc8d",
+        "type": "tab",
+        "label": "Endnotes",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "5c487a685c5333a0",
         "type": "http proxy",
         "name": "",
@@ -517,6 +525,7 @@
         "id": "538ac6d888e45f17",
         "type": "delay",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "0.5",
@@ -574,7 +583,8 @@
         "y": 220,
         "wires": [
             [
-                "f26e45d9c9fa3e90"
+                "f26e45d9c9fa3e90",
+                "919bfe6e9b22f0ee"
             ]
         ]
     },
@@ -632,6 +642,7 @@
         "id": "1146df7375648711",
         "type": "delay",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "0.5",
@@ -658,22 +669,23 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "END",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
+        "complete": "currenttypedata",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 850,
-        "y": 140,
+        "x": 810,
+        "y": 120,
         "wires": []
     },
     {
         "id": "75a92450b3daa30f",
         "type": "function",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "update scripturePlus ID",
         "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: `${msg.currentTypeData.id}`\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
@@ -695,7 +707,7 @@
         "type": "debug",
         "z": "0f423dc7fc354cb4",
         "name": "msg.currentTypeData",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -869,6 +881,7 @@
         "id": "94dcb04bc5cc0c3e",
         "type": "delay",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "0.5",
@@ -964,6 +977,7 @@
         "id": "8470507495197745",
         "type": "delay",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "0.5",
@@ -1006,6 +1020,7 @@
         "id": "c586ae27446c428b",
         "type": "function",
         "z": "0f423dc7fc354cb4",
+        "d": true,
         "name": "update scripturePlus ID",
         "func": "const id = msg.payload.data[0].id\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}`;\nmsg.payload = {\n    \"data\": {\n    scripturePlusId: `${msg.currentTypeData.id}`\n    }\n};\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
@@ -1324,8 +1339,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 300,
-        "y": 200,
+        "x": 220,
+        "y": 280,
         "wires": [
             [
                 "e2fa5d956c2e2d2b"
@@ -1559,6 +1574,7 @@
         "id": "acad7d629fce79d0",
         "type": "GSheet",
         "z": "8c069999c82e3d42",
+        "d": true,
         "creds": "0f9e4add1d4cec9d",
         "method": "update",
         "action": "",
@@ -1629,7 +1645,7 @@
         "id": "8c018fcee8055650",
         "type": "function",
         "z": "8c069999c82e3d42",
-        "name": "function 3",
+        "name": "isValid Url",
         "func": "\nconst isUrl = global.get(\"isUrl\")\n\nif (!isUrl(msg.url)){\n    msg.statusCode = 'XXX'\n    return [msg, null]\n}else{\n    return [null,msg]\n}",
         "outputs": 2,
         "timeout": 0,
@@ -1664,6 +1680,638 @@
         "statusType": "auto",
         "x": 1200,
         "y": 580,
+        "wires": []
+    },
+    {
+        "id": "69356dab36e3cfd2",
+        "type": "inject",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "Knowhy EN",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "scripture_knowhys",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "knowhys",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "005063a6889e90db"
+            ]
+        ]
+    },
+    {
+        "id": "ae87ae464c953cf8",
+        "type": "inject",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "Knowhy ES",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "type",
+                "v": "scripture_knowhys",
+                "vt": "str"
+            },
+            {
+                "p": "contentType",
+                "v": "knowwhys",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "es",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 120,
+        "wires": [
+            [
+                "005063a6889e90db"
+            ]
+        ]
+    },
+    {
+        "id": "1ba12c85143f6333",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "319b741854b04838",
+        "type": "http request",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "Get S+",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 480,
+        "y": 140,
+        "wires": [
+            [
+                "6f5eedbcbc56ddfe",
+                "1ba12c85143f6333"
+            ]
+        ]
+    },
+    {
+        "id": "c448540d5e91cd8e",
+        "type": "delay",
+        "z": "6a5cdb3d473bbc8d",
+        "d": true,
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 350,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6f5eedbcbc56ddfe",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "prepareData",
+        "func": "\n\nfor (let index = 0; index < msg.payload.data.length; index++) {\n    const element = msg.payload.data[index];\n    msg.typeData.push(element)\n}\n\nmsg.maxPage = msg.payload.pagination.totalPages-1\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 180,
+        "wires": [
+            [
+                "c448540d5e91cd8e"
+            ]
+        ]
+    },
+    {
+        "id": "1bcd0d198182f18c",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "cheerio to check html",
+        "func": "const cheerio = global.get('cheerio');\n\n// Assuming HTML content is in msg.payload.htmlContent\nconst htmlContent = msg.payload.htmlContent;\n\n// Initialize msg.footnotes\nmsg.footnotes = \"\";\n\n// Load the HTML content into Cheerio\nconst $ = cheerio.load(htmlContent);\n\n// Find the <div> element with class \"footnotes\"\nconst footnotesDiv = $('div.footnotes');\n\n// Check if any <div> elements with class \"footnotes\" were found\nif (footnotesDiv.length > 0) {\n    // If found, extract the HTML content of the first matching element\n    msg.footnotes = footnotesDiv.first().html();\n}\n\n// Pass on the modified msg object\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 845,
+        "y": 234,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d4bfcb7b144f3462",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "d": true,
+        "name": "function 3",
+        "func": "\nmsg.i = msg.i+1 || 0\nmsg.currentTypeData = null\n\nif (msg.typeData.length < msg.i){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.typeData[msg.i]\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 120,
+        "wires": [
+            [],
+            [
+                "02da76167f91afee",
+                "4c3dbdca798ea646"
+            ]
+        ]
+    },
+    {
+        "id": "02da76167f91afee",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "debug 15",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4c3dbdca798ea646",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "url knowhy",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?filters[number][$eq]=${msg.currentTypeData.number}${msg.currentTypeData.locale? `&locale=${msg.currentTypeData.locale}`:\"\"}`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "30d85103e94b4026",
+        "type": "http request",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "API Request",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 470,
+        "y": 340,
+        "wires": [
+            [
+                "92574b9bd1de6183",
+                "62cb58fe38ce9474"
+            ]
+        ]
+    },
+    {
+        "id": "830f3f56f0fc4217",
+        "type": "inject",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "sheet",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "9cb2bc45d354c851"
+            ]
+        ]
+    },
+    {
+        "id": "9cb2bc45d354c851",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "url",
+        "func": "msg.contentType = \"knowhys\";\nmsg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}${msg.locale ? `?locale=${msg.locale}` : \"\"}`;\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 340,
+        "wires": [
+            [
+                "30d85103e94b4026"
+            ]
+        ]
+    },
+    {
+        "id": "6b254a6d264d0846",
+        "type": "delay",
+        "z": "6a5cdb3d473bbc8d",
+        "d": true,
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 540,
+        "y": 520,
+        "wires": [
+            [
+                "9cb2bc45d354c851"
+            ]
+        ]
+    },
+    {
+        "id": "be68a525f69db4ac",
+        "type": "http request",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "GET",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1370,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e96e9bdf9e9a6023",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "url exists?",
+        "func": "\nif ( msg.e >= msg.urls.length) {\n    msg.payload = 'END GROUP'\n    return [msg, null];\n}else{\n    \n    //continue to check \n    msg.currentElement = msg.urls[msg.e]\n    msg.url = msg.currentElement.url\n    msg.e = msg.e + 1\n    return [null, msg];\n}",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 380,
+        "wires": [
+            [
+                "30346925c3e852c6",
+                "6b254a6d264d0846"
+            ],
+            [
+                "38c981fabd04f134"
+            ]
+        ]
+    },
+    {
+        "id": "30346925c3e852c6",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "END GROUP",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1210,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "92574b9bd1de6183",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "END content Types",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "38c981fabd04f134",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "isValid Url",
+        "func": "\nconst isUrl = global.get(\"isUrl\")\n\nif (!isUrl(msg.url)){\n    msg.statusCode = 'XXX'\n    return [msg, null]\n}else{\n    return [null,msg]\n}",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 460,
+        "wires": [
+            [],
+            [
+                "be68a525f69db4ac",
+                "a524e143cd707fb1"
+            ]
+        ]
+    },
+    {
+        "id": "a524e143cd707fb1",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "debug 16",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "url",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "005063a6889e90db",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "url",
+        "func": "\nmsg.page = msg.page+1 || 0\nmsg.maxPage = msg.maxPage || 0\nmsg.typeData = msg.typeData || []\n\nif (msg.page >msg.maxPage){\n\n    return [msg, null]\n}else{\n    msg.url = `https://us-central1-scripturecentral-dev.cloudfunctions.net/scripturecore-api-dev/api/v1/references/${msg.type}&page=${msg.page}${(msg.locale != 'en') ? `&locale=${msg.locale}` : \"\"}`\n\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 120,
+        "wires": [
+            [
+                "d4bfcb7b144f3462"
+            ],
+            [
+                "319b741854b04838"
+            ]
+        ]
+    },
+    {
+        "id": "4f267b5c7eedbc51",
+        "type": "inject",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "getStrapi ecv by number",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 600,
+        "wires": [
+            [
+                "2838ac89bc517f9d"
+            ]
+        ]
+    },
+    {
+        "id": "2838ac89bc517f9d",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "url",
+        "func": "msg.url = `${env.get('STRAPI_URL')}/api/evidences?filters[number][$eq]=433`\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 600,
+        "wires": [
+            [
+                "7eabb066e8872f07"
+            ]
+        ]
+    },
+    {
+        "id": "7eabb066e8872f07",
+        "type": "http request",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "getStrapi",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 540,
+        "y": 600,
+        "wires": [
+            [
+                "556a64a4c5a779c1",
+                "2db3095abde4b36b"
+            ]
+        ]
+    },
+    {
+        "id": "556a64a4c5a779c1",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "d": true,
+        "name": "update scripturePlusID",
+        "func": "\nconst updateUrl = `${env.get('STRAPI_URL')}/api/evidences/${currentTypeData}`;\nmsg.payload = {\n    scripturePlusId: \"Hello2\"\n};\n\nmsg.method = \"POST\";\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json' \n};\n\nmsg.url = updateUrl;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 1,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 620,
+        "wires": [
+            [
+                "b4e6128bbfbbf1a7"
+            ]
+        ]
+    },
+    {
+        "id": "b4e6128bbfbbf1a7",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "d": true,
+        "name": "updated entry",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "62cb58fe38ce9474",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "cheerio to check html",
+        "func": "const cheerio = global.get('cheerio');\nconst htmlContent = msg.payload.htmlContent;\nmsg.footnotes = \"\";\n\n\nconst $ = cheerio.load(htmlContent);\nconst footnotesDiv = $('div.footnotes');\n\nif (footnotesDiv.length > 0) {\n    msg.footnotes = footnotesDiv.first().html();\n}\n\nreturn msg;\n\nconst cheerio = global.get(\"cheerio\")\n\nmsg.urls=[]\nmsg.e = 0\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    msg.currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        \n        $('a').each(function(){\n            let url = {\n                id: currentObject.id,\n                type: \"a\",\n                attribute: iterator,\n                contentType: msg.contentType,\n                url: $(this).attr('href')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n         $('img').each(function(){\n            let url = {\n                    id: currentObject.id,\n                    type: \"img\",\n                    attribute: iterator,\n                    contentType: msg.contentType,\n                    url: $(this).attr('src')\n            }\n            if (!msg.urls.includes(url)){\n                msg.urls.push(url)\n            }\n            \n        })\n\n\n    }\n}\nreturn msg;\nconst cheerio = global.get(\"cheerio\");\n\nmsg.containsFootnotes = false;\n\nfor (const iterator in msg.payload.data) {\n    let currentObject = msg.payload.data[iterator];\n    msg.currentObject = msg.payload.data[iterator];\n\n    for (const iterator of Object.keys(currentObject.attributes)) {\n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n\n        // Check if there are any div elements with class \"footnotes\"\n        if ($('div.footnotes').length > 0) {\n            msg.containsFootnotes = true;\n            // If found, set containsFootnotes to true and break the loop\n            break;\n        }\n    }\n\n    // If footnotes are found, break the outer loop\n    if (msg.containsFootnotes) {\n        break;\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 4,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 380,
+        "wires": [
+            [
+                "e96e9bdf9e9a6023"
+            ]
+        ]
+    },
+    {
+        "id": "2db3095abde4b36b",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 520,
         "wires": []
     }
 ]
