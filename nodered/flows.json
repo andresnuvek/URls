@@ -1683,200 +1683,6 @@
         "wires": []
     },
     {
-        "id": "1bcd0d198182f18c",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "cheerio to check html",
-        "func": "const cheerio = global.get('cheerio');\n\n// Assuming HTML content is in msg.payload.htmlContent\nconst htmlContent = msg.payload.htmlContent;\n\n// Initialize msg.footnotes\nmsg.footnotes = \"\";\n\n// Load the HTML content into Cheerio\nconst $ = cheerio.load(htmlContent);\n\n// Find the <div> element with class \"footnotes\"\nconst footnotesDiv = $('div.footnotes');\n\n// Check if any <div> elements with class \"footnotes\" were found\nif (footnotesDiv.length > 0) {\n    // If found, extract the HTML content of the first matching element\n    msg.footnotes = footnotesDiv.first().html();\n}\n\n// Pass on the modified msg object\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 840,
-        "y": 60,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "30d85103e94b4026",
-        "type": "http request",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "API Request",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 420,
-        "y": 120,
-        "wires": [
-            [
-                "92574b9bd1de6183",
-                "62cb58fe38ce9474"
-            ]
-        ]
-    },
-    {
-        "id": "830f3f56f0fc4217",
-        "type": "inject",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            },
-            {
-                "p": "sheet",
-                "v": "",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 100,
-        "y": 120,
-        "wires": [
-            [
-                "9cb2bc45d354c851"
-            ]
-        ]
-    },
-    {
-        "id": "9cb2bc45d354c851",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "url",
-        "func": "msg.contentType = \"knowhys\";\nmsg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}${msg.locale ? `?locale=${msg.locale}` : \"\"}`;\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY')\n};\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 280,
-        "y": 120,
-        "wires": [
-            [
-                "30d85103e94b4026"
-            ]
-        ]
-    },
-    {
-        "id": "be68a525f69db4ac",
-        "type": "http request",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "GET",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1050,
-        "y": 280,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "e96e9bdf9e9a6023",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "Update Endote",
-        "func": "",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 980,
-        "y": 160,
-        "wires": [
-            [
-                "30346925c3e852c6"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "30346925c3e852c6",
-        "type": "debug",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "END GROUP",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1160,
-        "y": 140,
-        "wires": []
-    },
-    {
-        "id": "92574b9bd1de6183",
-        "type": "debug",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "payload",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 590,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "62cb58fe38ce9474",
-        "type": "function",
-        "z": "6a5cdb3d473bbc8d",
-        "name": "cheerio to check html",
-        "func": "const cheerio = global.get(\"cheerio\")\n\nmsg.footnotes = \"\";\nmsg.e = 0\n\nfor (const iterator in msg.payload.data) {\n    \n    let currentObject = msg.payload.data[iterator]\n    msg.currentObject = msg.payload.data[iterator]\n    \n    for (const iterator of Object.keys(currentObject.attributes)) {\n        \n        const $ = cheerio.load(`${currentObject.attributes[iterator]}`);\n        const footnotesDiv = $('div.footnotes');\n\n        if (footnotesDiv.length > 0) {\n            msg.footnotes = footnotesDiv.first().html();\n        }\n    }\n}\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 730,
-        "y": 160,
-        "wires": [
-            [
-                "e96e9bdf9e9a6023"
-            ]
-        ]
-    },
-    {
         "id": "5cbf4f03ed496891",
         "type": "inject",
         "z": "6a5cdb3d473bbc8d",
@@ -1898,7 +1704,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 150,
-        "y": 360,
+        "y": 40,
         "wires": [
             [
                 "17833301ed116936"
@@ -1918,7 +1724,7 @@
         "finalize": "",
         "libs": [],
         "x": 250,
-        "y": 400,
+        "y": 80,
         "wires": [
             [
                 "baa81e292b96d712"
@@ -1942,7 +1748,7 @@
         "senderr": false,
         "headers": [],
         "x": 390,
-        "y": 400,
+        "y": 80,
         "wires": [
             [
                 "3ae84979026c050f"
@@ -1962,7 +1768,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 440,
+        "y": 120,
         "wires": [
             [
                 "8757c2dbfda5594e"
@@ -1982,7 +1788,7 @@
         "finalize": "",
         "libs": [],
         "x": 600,
-        "y": 440,
+        "y": 120,
         "wires": [
             [
                 "1c8d4a4f1305d58e"
@@ -2010,7 +1816,7 @@
         "allowrate": false,
         "outputs": 1,
         "x": 610,
-        "y": 580,
+        "y": 260,
         "wires": [
             [
                 "8757c2dbfda5594e"
@@ -2031,7 +1837,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 730,
-        "y": 380,
+        "y": 60,
         "wires": []
     },
     {
@@ -2051,49 +1857,49 @@
         "senderr": false,
         "headers": [],
         "x": 730,
-        "y": 480,
+        "y": 160,
         "wires": [
             [
-                "d86868f8852460b0"
+                "80c7a1039ef466c8"
             ]
         ]
     },
     {
-        "id": "d86868f8852460b0",
+        "id": "80c7a1039ef466c8",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
-        "name": "cheerio",
-        "func": "const cheerio = global.get(\"cheerio\")\n\nconst $ = cheerio.load(msg.payload);\n\n$('.footnotes').each(function(){\n\n    msg.oldFootnote = $(this).html()\n\n    //TODO: vereficar correcto footnote : \n    // <ul><li></li></ul>\n    // check: https://knowhy.bookofmormoncentral.org/knowhy/what-is-the-skin-of-blackness-in-the-book-of-mormon\n\n    msg.newFootnote= ''\n})\nreturn msg;",
+        "name": "corrected footnote",
+        "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\n\n$('.footnotes').each(function(){\n    let newFootnote = '';\n    \n    $(this).find('a.footnote-anchor').each(function() {\n        \n        let oldFootnote = $(this).nextUntil('a.footnote-anchor').text().trim();      \n        newFootnote += `<li>${oldFootnote}</li>`;\n    });\n    msg.newFootnote = `<ul>${newFootnote}</ul>`;\n});\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 840,
-        "y": 520,
+        "x": 930,
+        "y": 160,
         "wires": [
             [
-                "09762ac47135e4b9",
-                "64394877c05b0cd6"
+                "770827e818e3e581",
+                "09762ac47135e4b9"
             ]
         ]
     },
     {
-        "id": "64394877c05b0cd6",
+        "id": "770827e818e3e581",
         "type": "debug",
         "z": "6a5cdb3d473bbc8d",
-        "name": "debug 12",
-        "active": true,
+        "name": "newfootnote",
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "footnote",
+        "complete": "newFootnote",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1000,
-        "y": 480,
+        "x": 1110,
+        "y": 160,
         "wires": []
     }
 ]
