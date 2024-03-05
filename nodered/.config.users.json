@@ -20,6 +20,9 @@
                     "pretty": true
                 }
             }
+        },
+        "debug": {
+            "clearType": "all"
         }
     }
 }

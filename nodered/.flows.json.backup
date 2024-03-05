@@ -26,7 +26,7 @@
     {
         "id": "6a5cdb3d473bbc8d",
         "type": "tab",
-        "label": "Endnotes",
+        "label": "Footnotes",
         "disabled": false,
         "info": "",
         "env": []
@@ -1802,6 +1802,7 @@
         "id": "09762ac47135e4b9",
         "type": "delay",
         "z": "6a5cdb3d473bbc8d",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "0.100",
@@ -1832,12 +1833,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
+        "complete": "url",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 730,
-        "y": 60,
+        "x": 790,
+        "y": 100,
         "wires": []
     },
     {
@@ -1860,16 +1861,38 @@
         "y": 160,
         "wires": [
             [
-                "80c7a1039ef466c8"
+                "e6935da1c704d1ee",
+                "6e71c75a495ec76b",
+                "c0cc2f479b989d47",
+                "dcda74b406394dfa",
+                "c11d86ef7dc5a57e"
             ]
         ]
     },
     {
-        "id": "80c7a1039ef466c8",
+        "id": "770827e818e3e581",
+        "type": "debug",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "newFootnote",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "newFootnote",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "e6935da1c704d1ee",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
+        "d": true,
         "name": "corrected footnote",
-        "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\n\n$('.footnotes').each(function(){\n    let newFootnote = '';\n    \n    $(this).find('a.footnote-anchor').each(function() {\n        \n        let oldFootnote = $(this).nextUntil('a.footnote-anchor').text().trim();      \n        newFootnote += `<li>${oldFootnote}</li>`;\n    });\n    msg.newFootnote = `<ul>${newFootnote}</ul>`;\n});\n\nreturn msg;\n",
+        "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\n\n$('.footnotes').each(function () {\n    let newFootnote = '';\n\n    $(this).find('a.footnote-anchor').each(function () {\n\n        let oldFootnote = $(this).nextUntil('a.br').text().trim();\n        newFootnote += `<li>${oldFootnote}</li>`;\n    });\n    msg.newFootnote = `<ul>${newFootnote}</ul>`;\n});\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1886,20 +1909,86 @@
         ]
     },
     {
-        "id": "770827e818e3e581",
-        "type": "debug",
+        "id": "6e71c75a495ec76b",
+        "type": "function",
         "z": "6a5cdb3d473bbc8d",
-        "name": "newfootnote",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "newFootnote",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1110,
-        "y": 160,
-        "wires": []
+        "d": true,
+        "name": "function 3",
+        "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\n\nlet newFootnote = '';\n\n$('.footnotes').each(function () {\n    $(this).find('p#unfn').each(function () {\n        $(this).find('a').each(function () {\n            let oldFootnoteText = $(this).html().trim();\n            let oldFootnoteHref = $(this).attr('href');\n            newFootnote += `<li><a href=\"${oldFootnoteHref}\">${oldFootnoteText}</a></li>`;\n        });\n    });\n});\n\nmsg.newFootnote = `<ul>${newFootnote}</ul>`;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 240,
+        "wires": [
+            [
+                "770827e818e3e581"
+            ]
+        ]
+    },
+    {
+        "id": "c0cc2f479b989d47",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "d": true,
+        "name": "function 4",
+        "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\n\n$('.footnotes').each(function () {\n    let newFootnote = '';\n    $(this).find('p#unfn').each(function () {\n        $(this).find('a').each(function () {\n            let href = $(this).attr('href');\n            let oldFootnote = $(this).nextUntil('a.br').text().trim();\n            if (href) { // Check if href exists\n                newFootnote += `<li>${href}+${oldFootnote}</li>`;\n            }\n        });\n    });\n    msg.newFootnote = `<ul>${newFootnote}</ul>`;\n});\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 320,
+        "wires": [
+            [
+                "770827e818e3e581"
+            ]
+        ]
+    },
+    {
+        "id": "dcda74b406394dfa",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "d": true,
+        "name": "functional",
+        "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\nlet newFootnote = '';\n$('.footnotes').each(function () {\n        const oldFootnote = $('div.footnotes').html();\n        newFootnote += `<li>${oldFootnote}</li>`;\n    });\n    msg.newFootnote = `<ul>${newFootnote}</ul>`;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 380,
+        "wires": [
+            [
+                "770827e818e3e581"
+            ]
+        ]
+    },
+    {
+        "id": "c11d86ef7dc5a57e",
+        "type": "function",
+        "z": "6a5cdb3d473bbc8d",
+        "name": "function 6",
+        "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\nlet newFootnote = '<ul>';\n\n$('.footnotes').each(function () {\n    $(this).children().each(function () {\n        if ($(this).is('br')) {\n            return false; // Stop looping when encountering a <br> tag\n        }\n        newFootnote += `<li class=\"footnote\">${$(this).html()}</li>`;\n    });\n});\n\nnewFootnote += '</ul>';\nmsg.newFootnote = newFootnote;\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 440,
+        "wires": [
+            [
+                "770827e818e3e581"
+            ]
+        ]
     }
 ]
