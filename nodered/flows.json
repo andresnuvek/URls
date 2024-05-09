@@ -32,6 +32,13 @@
         "env": []
     },
     {
+        "id": "ded3b8aa0b8e9043",
+        "type": "tab",
+        "label": "Check SEO",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "5c487a685c5333a0",
         "type": "http proxy",
         "name": "",
@@ -1432,6 +1439,7 @@
         "id": "6237c1f08b4d0814",
         "type": "delay",
         "z": "8c069999c82e3d42",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "1",
@@ -1477,6 +1485,7 @@
         "id": "eeb84c4f08496624",
         "type": "delay",
         "z": "8c069999c82e3d42",
+        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "1",
@@ -1574,7 +1583,6 @@
         "id": "acad7d629fce79d0",
         "type": "GSheet",
         "z": "8c069999c82e3d42",
-        "d": true,
         "creds": "0f9e4add1d4cec9d",
         "method": "update",
         "action": "",
@@ -1703,8 +1711,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
-        "y": 40,
+        "x": 170,
+        "y": 160,
         "wires": [
             [
                 "17833301ed116936"
@@ -1723,8 +1731,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 250,
-        "y": 80,
+        "x": 270,
+        "y": 220,
         "wires": [
             [
                 "baa81e292b96d712"
@@ -1747,8 +1755,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 390,
-        "y": 80,
+        "x": 450,
+        "y": 100,
         "wires": [
             [
                 "3ae84979026c050f"
@@ -1767,8 +1775,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 440,
-        "y": 120,
+        "x": 500,
+        "y": 140,
         "wires": [
             [
                 "8757c2dbfda5594e"
@@ -1787,14 +1795,13 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 600,
-        "y": 120,
+        "x": 660,
+        "y": 140,
         "wires": [
+            [],
             [
+                "54a1b4b395dddc4b",
                 "1c8d4a4f1305d58e"
-            ],
-            [
-                "54a1b4b395dddc4b"
             ]
         ]
     },
@@ -1837,14 +1844,15 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 790,
-        "y": 100,
+        "x": 850,
+        "y": 120,
         "wires": []
     },
     {
         "id": "54a1b4b395dddc4b",
         "type": "http request",
         "z": "6a5cdb3d473bbc8d",
+        "d": true,
         "name": "GET Current KW",
         "method": "GET",
         "ret": "txt",
@@ -1857,8 +1865,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 730,
-        "y": 160,
+        "x": 790,
+        "y": 180,
         "wires": [
             [
                 "c11d86ef7dc5a57e"
@@ -1886,6 +1894,7 @@
         "id": "c11d86ef7dc5a57e",
         "type": "function",
         "z": "6a5cdb3d473bbc8d",
+        "d": true,
         "name": "corrected footnote",
         "func": "const cheerio = global.get(\"cheerio\");\n\nconst $ = cheerio.load(msg.payload);\nlet newFootnote = '<ul>';\n\n$('.footnotes').each(function () {\n    $(this).children().each(function () {\n        if ($(this).is('br')) {\n            return false; // Stop looping when encountering a <br> tag\n        }\n        newFootnote += `<li class=\"footnote\">${$(this).html()}</li>`;\n    });\n});\n\nnewFootnote += '</ul>';\nmsg.newFootnote = newFootnote;\n\nreturn msg;\n\n",
         "outputs": 1,
@@ -1894,13 +1903,519 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 930,
-        "y": 180,
+        "x": 990,
+        "y": 200,
         "wires": [
             [
                 "770827e818e3e581",
                 "09762ac47135e4b9"
             ]
         ]
+    },
+    {
+        "id": "2138dcc2b9970318",
+        "type": "http request",
+        "z": "ded3b8aa0b8e9043",
+        "name": "Fetch API Data",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.scripturecentral.org/proxy/api/knowhys?populate=seo",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 468,
+        "y": 20,
+        "wires": [
+            [
+                "826f3dc89ef9ee64"
+            ]
+        ]
+    },
+    {
+        "id": "826f3dc89ef9ee64",
+        "type": "function",
+        "z": "ded3b8aa0b8e9043",
+        "name": "Check and Populate SEO",
+        "func": "let data = msg.payload;\n\nif (Array.isArray(data)) {\n  data.forEach(item => {\n    let seo = item.attributes.seo || {}; // Extracted SEO fields from the API response\n    item.seo = {\n      metaTitle: seo.metaTitle || \"Default Title\", // Use extracted metaTitle or default value\n      metaDescription: seo.metaDescription || \"Default Description\", // Use extracted metaDescription or default value\n      keywords: seo.keywords || \"Default Keywords\", // Use extracted keywords or default value\n      metaAuthor: seo.metaAuthor || \"Default Author\" // Use extracted metaAuthor or default value\n    };\n  });\n}\n\nmsg.payload = data;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 728,
+        "y": 20,
+        "wires": [
+            [
+                "8f9a5ae0ab0d43d5"
+            ]
+        ]
+    },
+    {
+        "id": "8f9a5ae0ab0d43d5",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "seo",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 918,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "23657c1816b7b1e2",
+        "type": "inject",
+        "z": "ded3b8aa0b8e9043",
+        "name": "Start",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 20,
+        "wires": [
+            [
+                "2138dcc2b9970318"
+            ]
+        ]
+    },
+    {
+        "id": "b4c4a7a2ea4d93a7",
+        "type": "function",
+        "z": "ded3b8aa0b8e9043",
+        "name": "Prepare Content Types",
+        "func": "msg.contentTypes = [\n  \"arch-reports\",\n  \"arch-musics\",\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 180,
+        "wires": [
+            [
+                "e8d292e4535d2d89"
+            ]
+        ]
+    },
+    {
+        "id": "e8d292e4535d2d89",
+        "type": "function",
+        "z": "ded3b8aa0b8e9043",
+        "name": "url",
+        "func": "\nmsg.i = msg.i+1 || 0\n\nif (msg.i >= msg.contentTypes.length){\n    msg.payload = 'END contentTypes'\n    return [msg, null]\n}else{\n    \n    msg.contentType = msg.contentTypes[msg.i] \n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?populate=seo${msg.locale ? `&locale=${msg.locale}` : \"\"}`\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n     }\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 220,
+        "wires": [
+            [
+                "1f417a28648262cd"
+            ],
+            [
+                "6c0734696aa75ae9"
+            ]
+        ]
+    },
+    {
+        "id": "6c0734696aa75ae9",
+        "type": "http request",
+        "z": "ded3b8aa0b8e9043",
+        "name": "Get S+",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 540,
+        "y": 220,
+        "wires": [
+            [
+                "ab4baa20affd7cd3",
+                "d1dc4a118707318b",
+                "a59f4f095584555a"
+            ]
+        ]
+    },
+    {
+        "id": "ab4baa20affd7cd3",
+        "type": "delay",
+        "z": "ded3b8aa0b8e9043",
+        "d": true,
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 390,
+        "y": 340,
+        "wires": [
+            [
+                "e8d292e4535d2d89"
+            ]
+        ]
+    },
+    {
+        "id": "268c93173064300d",
+        "type": "function",
+        "z": "ded3b8aa0b8e9043",
+        "name": "iterate elements ",
+        "func": "\nmsg.b = msg.b+1 || 0\nmsg.currentTypeData = null\n\nif (msg.allData.length < msg.b){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.allData[msg.b]\n    return [null, msg]\n}\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 260,
+        "wires": [
+            [
+                "44cdbab53db31397"
+            ],
+            [
+                "232918ba20280d73",
+                "19ba48854a27ee1b",
+                "caaac8a96ef59dc3"
+            ]
+        ]
+    },
+    {
+        "id": "19ba48854a27ee1b",
+        "type": "delay",
+        "z": "ded3b8aa0b8e9043",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "0.5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 730,
+        "y": 360,
+        "wires": [
+            [
+                "268c93173064300d"
+            ]
+        ]
+    },
+    {
+        "id": "44cdbab53db31397",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "END",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "currenttypedata",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "caaac8a96ef59dc3",
+        "type": "function",
+        "z": "ded3b8aa0b8e9043",
+        "name": "Check SEO",
+        "func": "const id = msg.currentTypeData.id;\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}}`;\n\n// Extract SEO fields from the response data\nlet seo = msg.currentTypeData.attributes.seo || {}; // Extracted SEO fields from the API response\n\n// Populate the payload with the SEO fields\nmsg.payload = {\n    data: {   \n        seo: {\n            metaTitle: seo.metaTitle || msg.currentTypeData.attributes.title || \" \", \n            metaDescription: seo.metaDescription || msg.currentTypeData.attributes.summary || msg.currentTypeData.attributes.title || \" \",\n            //keywords: seo.keywords || \"Default Keywords\",\n            //metaAuthor: seo.metaAuthor || \"Default Author\"\n        }\n    }\n};\n\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 260,
+        "wires": [
+            [
+                "2dd36119c1db7ba7",
+                "eb80e112811af9dc"
+            ]
+        ]
+    },
+    {
+        "id": "52ea3b3bc9d5cc1f",
+        "type": "inject",
+        "z": "ded3b8aa0b8e9043",
+        "name": "EN",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "contentType",
+                "v": "contentType",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "en",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 70,
+        "y": 140,
+        "wires": [
+            [
+                "b4c4a7a2ea4d93a7"
+            ]
+        ]
+    },
+    {
+        "id": "1f417a28648262cd",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "END content Types",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "5d1d5f1bc0c49d2f",
+        "type": "inject",
+        "z": "ded3b8aa0b8e9043",
+        "name": "ES",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "contentType",
+                "v": "contentType",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "es",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 70,
+        "y": 180,
+        "wires": [
+            [
+                "b4c4a7a2ea4d93a7"
+            ]
+        ]
+    },
+    {
+        "id": "9f076867703fe8b0",
+        "type": "inject",
+        "z": "ded3b8aa0b8e9043",
+        "name": "PT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "contentType",
+                "v": "contentType",
+                "vt": "str"
+            },
+            {
+                "p": "locale",
+                "v": "pt",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 70,
+        "y": 220,
+        "wires": [
+            [
+                "b4c4a7a2ea4d93a7"
+            ]
+        ]
+    },
+    {
+        "id": "d1dc4a118707318b",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "debug 22",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a59f4f095584555a",
+        "type": "function",
+        "z": "ded3b8aa0b8e9043",
+        "name": "function 3",
+        "func": "msg.allData = msg.payload.data\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 220,
+        "wires": [
+            [
+                "268c93173064300d"
+            ]
+        ]
+    },
+    {
+        "id": "232918ba20280d73",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "debug 23",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "currentTypeData",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "2dd36119c1db7ba7",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "eb80e112811af9dc",
+        "type": "http request",
+        "z": "ded3b8aa0b8e9043",
+        "name": "",
+        "method": "PUT",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1100,
+        "y": 300,
+        "wires": [
+            [
+                "74ea2b2f1ebaed8c"
+            ]
+        ]
+    },
+    {
+        "id": "74ea2b2f1ebaed8c",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "debug 25",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1240,
+        "y": 260,
+        "wires": []
     }
 ]
