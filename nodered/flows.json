@@ -1913,96 +1913,6 @@
         ]
     },
     {
-        "id": "2138dcc2b9970318",
-        "type": "http request",
-        "z": "ded3b8aa0b8e9043",
-        "name": "Fetch API Data",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "https://api.scripturecentral.org/proxy/api/knowhys?populate=seo",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 468,
-        "y": 20,
-        "wires": [
-            [
-                "826f3dc89ef9ee64"
-            ]
-        ]
-    },
-    {
-        "id": "826f3dc89ef9ee64",
-        "type": "function",
-        "z": "ded3b8aa0b8e9043",
-        "name": "Check and Populate SEO",
-        "func": "let data = msg.payload;\n\nif (Array.isArray(data)) {\n  data.forEach(item => {\n    let seo = item.attributes.seo || {}; // Extracted SEO fields from the API response\n    item.seo = {\n      metaTitle: seo.metaTitle || \"Default Title\", // Use extracted metaTitle or default value\n      metaDescription: seo.metaDescription || \"Default Description\", // Use extracted metaDescription or default value\n      keywords: seo.keywords || \"Default Keywords\", // Use extracted keywords or default value\n      metaAuthor: seo.metaAuthor || \"Default Author\" // Use extracted metaAuthor or default value\n    };\n  });\n}\n\nmsg.payload = data;\nreturn msg;\n",
-        "outputs": 1,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 728,
-        "y": 20,
-        "wires": [
-            [
-                "8f9a5ae0ab0d43d5"
-            ]
-        ]
-    },
-    {
-        "id": "8f9a5ae0ab0d43d5",
-        "type": "debug",
-        "z": "ded3b8aa0b8e9043",
-        "name": "seo",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 918,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "23657c1816b7b1e2",
-        "type": "inject",
-        "z": "ded3b8aa0b8e9043",
-        "name": "Start",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 230,
-        "y": 20,
-        "wires": [
-            [
-                "2138dcc2b9970318"
-            ]
-        ]
-    },
-    {
         "id": "b4c4a7a2ea4d93a7",
         "type": "function",
         "z": "ded3b8aa0b8e9043",
@@ -2014,7 +1924,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 250,
+        "x": 270,
         "y": 180,
         "wires": [
             [
@@ -2027,14 +1937,14 @@
         "type": "function",
         "z": "ded3b8aa0b8e9043",
         "name": "url",
-        "func": "\nmsg.i = msg.i+1 || 0\n\nif (msg.i >= msg.contentTypes.length){\n    msg.payload = 'END contentTypes'\n    return [msg, null]\n}else{\n    \n    msg.contentType = msg.contentTypes[msg.i] \n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?populate=seo${msg.locale ? `&locale=${msg.locale}` : \"\"}`\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n     }\n    return [null, msg]\n}\n",
+        "func": "msg.i = msg.i + 1 || 0;\nmsg.page = msg.page + 1 || 1;\nmsg.pageSize = msg.pageSize || 25;\n\n\nif (msg.i >= msg.contentTypes.length) {\n    msg.payload = 'END contentTypes';\n    return [msg, null];\n} else {\n    msg.contentType = msg.contentTypes[msg.i];\n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?populate=seo&pagination[page]=${msg.page}&pagination[pageSize]=${msg.pageSize}${msg.locale ? `&locale=${msg.locale}` : \"\"}`;\n    msg.page++\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n       \n    };\n\n    return [null, msg];\n}",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
+        "x": 350,
         "y": 220,
         "wires": [
             [
@@ -2061,7 +1971,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 540,
+        "x": 560,
         "y": 220,
         "wires": [
             [
@@ -2102,15 +2012,15 @@
         "type": "function",
         "z": "ded3b8aa0b8e9043",
         "name": "iterate elements ",
-        "func": "\nmsg.b = msg.b+1 || 0\nmsg.currentTypeData = null\n\nif (msg.allData.length < msg.b){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.allData[msg.b]\n    return [null, msg]\n}\n",
+        "func": "msg.b = msg.b+1 || 0\nmsg.currentTypeData = null\n\nif (msg.allData.length < msg.b){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.allData[msg.b]\n    msg.page++\n    return [null, msg]\n}",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 740,
-        "y": 260,
+        "x": 780,
+        "y": 280,
         "wires": [
             [
                 "44cdbab53db31397"
@@ -2169,15 +2079,15 @@
         "type": "function",
         "z": "ded3b8aa0b8e9043",
         "name": "Check SEO",
-        "func": "const id = msg.currentTypeData.id;\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}}`;\n\n// Extract SEO fields from the response data\nlet seo = msg.currentTypeData.attributes.seo || {}; // Extracted SEO fields from the API response\n\n// Populate the payload with the SEO fields\nmsg.payload = {\n    data: {   \n        seo: {\n            metaTitle: seo.metaTitle || msg.currentTypeData.attributes.title || \" \", \n            metaDescription: seo.metaDescription || msg.currentTypeData.attributes.summary || msg.currentTypeData.attributes.title || \" \",\n            //keywords: seo.keywords || \"Default Keywords\",\n            //metaAuthor: seo.metaAuthor || \"Default Author\"\n        }\n    }\n};\n\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
+        "func": "const id = msg.currentTypeData.id;\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}/`;\n\n\n\n\nlet seo = msg.currentTypeData.attributes.seo || {}; // Extracted SEO fields from the API response\n\nmsg.payload = {\n    data: {   \n        seo: {\n            metaTitle: seo.metaTitle || msg.currentTypeData.attributes.title || \" \", \n            metaDescription: seo.metaDescription || msg.currentTypeData.attributes.summary || msg.currentTypeData.attributes.title || \" \",\n            //keywords: seo.keywords || \"Default Keywords\",\n            //metaAuthor: seo.metaAuthor || \"Default Author\"\n        }\n    }\n};\n\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 950,
-        "y": 260,
+        "x": 970,
+        "y": 280,
         "wires": [
             [
                 "2dd36119c1db7ba7",
@@ -2233,7 +2143,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 510,
+        "x": 530,
         "y": 160,
         "wires": []
     },
@@ -2320,7 +2230,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 720,
+        "x": 740,
         "y": 180,
         "wires": []
     },
@@ -2336,7 +2246,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 700,
+        "x": 720,
         "y": 220,
         "wires": [
             [
@@ -2357,7 +2267,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 940,
+        "x": 960,
         "y": 200,
         "wires": []
     },
@@ -2366,7 +2276,7 @@
         "type": "debug",
         "z": "ded3b8aa0b8e9043",
         "name": "debug 24",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -2394,8 +2304,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1100,
-        "y": 300,
+        "x": 1130,
+        "y": 280,
         "wires": [
             [
                 "74ea2b2f1ebaed8c"
@@ -2414,8 +2324,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1240,
-        "y": 260,
+        "x": 1260,
+        "y": 220,
         "wires": []
     }
 ]
