@@ -1917,7 +1917,7 @@
         "type": "function",
         "z": "ded3b8aa0b8e9043",
         "name": "Prepare Content Types",
-        "func": "msg.contentTypes = [\n  \"arch-reports\",\n  \"arch-musics\",\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\nreturn msg;",
+        "func": "msg.keyAcontentType = 0\nmsg.page = 1\n\nmsg.contentTypes = [\n  \"arch-reports\",\n  \"arch-musics\",\n  \"arch-art-contests\",\n  \"arch-art-works\",\n  \"arch-audios\",\n  \"arch-blog-posts\",\n  \"arch-books\",\n  \"arch-book-chapters\",\n  \"arch-broadcasts\",\n  \"arch-charts\",\n  \"arch-conf-generals\",\n  \"arch-conf-papers\",\n  \"arch-conf-proceeds\",\n  \"arch-encyc-entries\",\n  \"arch-journals\",\n  \"arch-journal-articles\",\n  \"arch-journal-collections\",\n  \"arch-magazines\",\n  \"arch-magazine-artics\",\n  \"arch-manuals\",\n  \"arch-manual-lessons\",\n  \"arch-manuscripts\",\n  \"arch-maps\",\n  \"arch-newslet-articles\",\n  \"arch-newslet-collections\",\n  \"arch-newsletters\",\n  \"arch-newsp-articles\",\n  \"arch-photographies\",\n  \"arch-presentations\",\n  \"arch-theses\",\n  \"arch-videos\",\n  \"arch-web-articles\",\n  \"bios\",\n  \"blogs\",\n  \"commentaries\",\n  \"events\",\n  \"evidences\",\n  \"images\",\n  \"insights\",\n  \"knowhys\",\n  \"podcasts\",\n  \"q-and-as\",\n  \"quotes\",\n  \"rp-catalogs\",\n  \"rp-groups\",\n  \"rp-group-lists\",\n  \"rp-lessons\",\n  \"rp-plans\",\n  \"rp-plan-lists\",\n  \"rp-sponsors\",\n  \"scripture-speakers\",\n  \"scripture-videos\",\n  \"videos\",\n  \"youtube-videos\"\n]\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -1937,21 +1937,20 @@
         "type": "function",
         "z": "ded3b8aa0b8e9043",
         "name": "url",
-        "func": "msg.i = msg.i + 1 || 0;\nmsg.page = msg.page + 1 || 1;\nmsg.pageSize = msg.pageSize || 25;\n\n\nif (msg.i >= msg.contentTypes.length) {\n    msg.payload = 'END contentTypes';\n    return [msg, null];\n} else {\n    msg.contentType = msg.contentTypes[msg.i];\n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?populate=seo&pagination[page]=${msg.page}&pagination[pageSize]=${msg.pageSize}${msg.locale ? `&locale=${msg.locale}` : \"\"}`;\n    msg.page++\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n       \n    };\n\n    return [null, msg];\n}",
+        "func": "\n\n\nif (msg.keyAcontentType >= msg.contentTypes.length) {\n    msg.payload = 'END contentTypes';\n    return [msg, null];\n} else {\n    msg.contentType = msg.contentTypes[msg.keyAcontentType];\n    msg.url = `${env.get('STRAPI_URL')}/api/${msg.contentType}?populate=seo&pagination[page]=${msg.page}${msg.locale ? `&locale=${msg.locale}` : \"\"}`;\n\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY')\n       \n    };\n\n    return [null, msg];\n}",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 350,
+        "x": 310,
         "y": 220,
         "wires": [
+            [],
             [
-                "1f417a28648262cd"
-            ],
-            [
-                "6c0734696aa75ae9"
+                "6c0734696aa75ae9",
+                "d85e2036686fdec7"
             ]
         ]
     },
@@ -1971,13 +1970,12 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 560,
-        "y": 220,
+        "x": 460,
+        "y": 320,
         "wires": [
             [
-                "ab4baa20affd7cd3",
-                "d1dc4a118707318b",
-                "a59f4f095584555a"
+                "a59f4f095584555a",
+                "d1dc4a118707318b"
             ]
         ]
     },
@@ -1985,7 +1983,6 @@
         "id": "ab4baa20affd7cd3",
         "type": "delay",
         "z": "ded3b8aa0b8e9043",
-        "d": true,
         "name": "",
         "pauseType": "delay",
         "timeout": "0.5",
@@ -1999,8 +1996,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 390,
-        "y": 340,
+        "x": 230,
+        "y": 300,
         "wires": [
             [
                 "e8d292e4535d2d89"
@@ -2012,21 +2009,20 @@
         "type": "function",
         "z": "ded3b8aa0b8e9043",
         "name": "iterate elements ",
-        "func": "msg.b = msg.b+1 || 0\nmsg.currentTypeData = null\n\nif (msg.allData.length < msg.b){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.allData[msg.b]\n    msg.page++\n    return [null, msg]\n}",
+        "func": "\nmsg.currentTypeData = null\n\nif (msg.allData.length < msg.b){\n    msg.payload = 'END'\n    return [msg, null]\n}else{\n    msg.currentTypeData = msg.allData[msg.b]\n    msg.b++\n    return [null, msg]\n}",
         "outputs": 2,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 780,
-        "y": 280,
+        "x": 800,
+        "y": 360,
         "wires": [
             [
-                "44cdbab53db31397"
+                "226592fa3f987736"
             ],
             [
-                "232918ba20280d73",
                 "19ba48854a27ee1b",
                 "caaac8a96ef59dc3"
             ]
@@ -2049,8 +2045,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 730,
-        "y": 360,
+        "x": 790,
+        "y": 460,
         "wires": [
             [
                 "268c93173064300d"
@@ -2058,39 +2054,21 @@
         ]
     },
     {
-        "id": "44cdbab53db31397",
-        "type": "debug",
-        "z": "ded3b8aa0b8e9043",
-        "name": "END",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "currenttypedata",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 910,
-        "y": 100,
-        "wires": []
-    },
-    {
         "id": "caaac8a96ef59dc3",
         "type": "function",
         "z": "ded3b8aa0b8e9043",
         "name": "Check SEO",
-        "func": "const id = msg.currentTypeData.id;\nconst updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}/`;\n\n\n\n\nlet seo = msg.currentTypeData.attributes.seo || {}; // Extracted SEO fields from the API response\n\nmsg.payload = {\n    data: {   \n        seo: {\n            metaTitle: seo.metaTitle || msg.currentTypeData.attributes.title || \" \", \n            metaDescription: seo.metaDescription || msg.currentTypeData.attributes.summary || msg.currentTypeData.attributes.title || \" \",\n            //keywords: seo.keywords || \"Default Keywords\",\n            //metaAuthor: seo.metaAuthor || \"Default Author\"\n        }\n    }\n};\n\nmsg.headers = {\n    Authorization: env.get('STRAPI_API_KEY'),\n    'Content-Type': 'application/json'\n};\n\nmsg.url = updateUrl;\nreturn msg;\n",
+        "func": "if (msg.currentTypeData?.id){\n    \n    const id = msg.currentTypeData.id;\n    const updateUrl = `${env.get('STRAPI_URL')}/api/${msg.contentType}/${id}/`;\n\n    let seo = msg.currentTypeData.attributes.seo || {}; // Extracted SEO fields from the API response\n\n    msg.payload = {\n        data: {\n            seo: {\n                metaTitle: seo.metaTitle || msg.currentTypeData.attributes.title || \" \",\n                metaDescription: seo.metaDescription || msg.currentTypeData.attributes.summary || msg.currentTypeData.attributes.title || \" \",\n                //keywords: seo.keywords || \"Default Keywords\",\n                //metaAuthor: seo.metaAuthor || \"Default Author\"\n            }\n        }\n    };\n\n    msg.headers = {\n        Authorization: env.get('STRAPI_API_KEY'),\n        'Content-Type': 'application/json'\n    };\n\n    msg.url = updateUrl;\n    return msg;\n}\n\n\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 970,
-        "y": 280,
+        "x": 1010,
+        "y": 360,
         "wires": [
             [
-                "2dd36119c1db7ba7",
                 "eb80e112811af9dc"
             ]
         ]
@@ -2122,30 +2100,13 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 70,
+        "x": 90,
         "y": 140,
         "wires": [
             [
                 "b4c4a7a2ea4d93a7"
             ]
         ]
-    },
-    {
-        "id": "1f417a28648262cd",
-        "type": "debug",
-        "z": "ded3b8aa0b8e9043",
-        "name": "END content Types",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 530,
-        "y": 160,
-        "wires": []
     },
     {
         "id": "5d1d5f1bc0c49d2f",
@@ -2218,75 +2179,24 @@
         ]
     },
     {
-        "id": "d1dc4a118707318b",
-        "type": "debug",
-        "z": "ded3b8aa0b8e9043",
-        "name": "debug 22",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 740,
-        "y": 180,
-        "wires": []
-    },
-    {
         "id": "a59f4f095584555a",
         "type": "function",
         "z": "ded3b8aa0b8e9043",
-        "name": "function 3",
-        "func": "msg.allData = msg.payload.data\nreturn msg;",
+        "name": "prepare",
+        "func": "msg.allData = msg.payload.data\nmsg.pageCount = msg.payload.meta.pagination.pageCount\n\nmsg.b = 0\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 720,
-        "y": 220,
+        "x": 600,
+        "y": 360,
         "wires": [
             [
                 "268c93173064300d"
             ]
         ]
-    },
-    {
-        "id": "232918ba20280d73",
-        "type": "debug",
-        "z": "ded3b8aa0b8e9043",
-        "name": "debug 23",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "currentTypeData",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 960,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "2dd36119c1db7ba7",
-        "type": "debug",
-        "z": "ded3b8aa0b8e9043",
-        "name": "debug 24",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1120,
-        "y": 220,
-        "wires": []
     },
     {
         "id": "eb80e112811af9dc",
@@ -2304,28 +2214,64 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1130,
-        "y": 280,
+        "x": 1090,
+        "y": 400,
         "wires": [
-            [
-                "74ea2b2f1ebaed8c"
-            ]
+            []
         ]
     },
     {
-        "id": "74ea2b2f1ebaed8c",
+        "id": "d1dc4a118707318b",
         "type": "debug",
         "z": "ded3b8aa0b8e9043",
-        "name": "debug 25",
+        "name": "debug 22",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1260,
-        "y": 220,
+        "x": 640,
+        "y": 300,
         "wires": []
+    },
+    {
+        "id": "d85e2036686fdec7",
+        "type": "debug",
+        "z": "ded3b8aa0b8e9043",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "url",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "226592fa3f987736",
+        "type": "function",
+        "z": "ded3b8aa0b8e9043",
+        "name": "checkPages ",
+        "func": "\nif (msg.page < msg.pageCount){\n    msg.page++\n}else{\n    msg.keyAcontentType++\n    msg.page = 1\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 220,
+        "wires": [
+            [
+                "ab4baa20affd7cd3"
+            ]
+        ]
     }
 ]
